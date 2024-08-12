@@ -1,0 +1,155 @@
+.MainEvent{
+margin-left: auto;
+margin-right: auto;
+margin-top:200px;
+width:60%;
+height:300px;
+}
+#MainEvent-font{
+font-size: 18px;
+font-weight: bold;
+}
+
+#mainbackimg {
+        display: block;
+        margin: 0 auto;
+        text-align: center;
+    }
+{
+background: url('/images/mainpagebackground.jpg') no-repeat 50% 0;
+    position: absolute;
+    left: 50%;
+    margin-left: -1280px;
+    width: 2560px;
+    height: 1000px;
+}
+.CharacterSearch {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+
+    }
+
+.CharacterSearch input {
+    width: 300px;
+    padding: 5px;
+    margin-left: 30px;
+}
+
+#charsearch {
+    margin-top: 3px;
+}
+ .table-container {
+
+}
+
+ table {
+            width: 100%;
+            border-collapse: collapse;
+
+}
+
+ th, td {
+            border: 1px solid #ddd;
+            padding: 6px;
+            text-align: center;
+}
+
+ th {
+            background-color: #f2f2f2;
+}
+
+#jobboard {
+            font-size: 18px;
+            font-weight: bold;
+
+            display: block;
+            width: 10%;
+            margin-left:20%;
+            margin-top:40px;
+            margin-bottom:10px
+
+}
+
+
+tr:nth-child(10n+1) {
+clear: both;
+}
+
+
+td {
+width: 10%;
+}
+
+
+ .job-btn {
+font-size: 13px;
+width: 100%;
+padding: 6px;
+border: none;
+background-color: rgba(255, 255, 255, 0);
+color: #000;
+cursor: pointer;
+transition: background-color 0.3s ease;
+ }
+
+.job-btn:hover {
+        background-color: #2980b9;
+            color: #fff;
+}
+
+.mainJob-board {
+   margin-left: auto;
+       margin-right: auto;
+       width: 60%;
+        border: 4px solid #000;
+}
+
+.job-show{
+display: flex;
+    justify-content: space-between;
+}
+
+.job-show1,
+.job-show2 {
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    width: 48%;
+}
+
+.job-show1 ul,
+.job-show2 ul {
+    list-style-type: none;
+}
+.MainJob{
+
+}
+
+.MainNews{
+margin-left: auto;
+margin-right: auto;
+margin-top:30px;
+margin-bottom:30px;
+width:60%;
+height:300px;
+}
+
+#NewNews-font{
+font-size: 18px;
+font-weight: bold;
+}
+
+.MainGuide{
+margin-left: auto;
+margin-right: auto;
+margin-top:30px;
+margin-bottom:30px;
+width:60%;
+height:300px;
+}
+
+#GameGuide-font{
+font-size: 18px;
+ font-weight: bold;
+ }

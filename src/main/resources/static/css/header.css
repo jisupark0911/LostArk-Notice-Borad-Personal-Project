@@ -1,0 +1,95 @@
+  .HeaderTop {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: white;
+            z-index: 1000;
+            border-bottom: 1px solid #ccc;
+            float;
+        }
+        .HeaderTop a {
+            text-decoration: none;
+            color: black;
+
+        }
+        .HeaderTop a:hover {
+           background-color: #2980b9;
+                       color: #fff;
+        }
+        .nav {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            margin-top: 60px;
+            height: 100px;
+
+        }
+        .nav a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .nav a:hover {
+            background-color: #2980b9;
+                        color: #fff;
+        }
+        .nav a{
+        text-decoration: none; color: black;
+         }
+        .nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .first-ul {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        .nav li {
+            font-size: 18px;
+            margin-right: 50px;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            width: 140px;
+            box-shadow: 0 8px 8px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+        .dropdown-content a {
+            list-style-type: none;
+            font-size: 14px;
+            color: black;
+            padding: 8px 0;
+            text-decoration: none;
+            display: block;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content li:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        #homelogo {
+            position: absolute;
+            top: 50px;
+            left: 200px;
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            object-position: center center;
+        }

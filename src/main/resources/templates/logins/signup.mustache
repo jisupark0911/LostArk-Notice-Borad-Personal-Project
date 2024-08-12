@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원가입</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- jQuery CDN -->
+    <link href="/css/signup.css" rel="stylesheet">
+
+</head>
+<body>
+<main class="form-signup">
+
+
+    <form action="/main/signup/create" method="post">
+        <a href="/main"><img id="homelogo" src="/images/homelogo.jpg"></a>
+        <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+        <div class="form-group">
+            <label for="userEmail">이메일</label>
+            <input type="text" class="form-control" name="userEmail" id="userEmail" >
+            <button type="button" class="btn btn-primary" onclick="emailCheck()">중복 확인</button>
+        </div>
+        <span id="checkResult"></span>
+        <div class="form-group">
+            <label for="userPassword">비밀번호</label>
+            <input type="password" class="form-control" name="userPassword" id="userPassword">
+        </div>
+        <div class="form-group">
+            <label for="userName">닉네임</label>
+            <input type="text" class="form-control" name="userName" id="userName">
+        </div>
+        <input type="submit" class="btn btn-primary" value="회원가입">
+    </form>
+</main>
+<footer>
+    {{>layouts/footer}}
+</footer>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const emailCheck = () => {
+        const email = $("#userEmail").val(); // jQuery를 사용하여 이메일 값 가져오기
+        const checkResult = $("#checkResult"); // jQuery를 사용하여 결과를 표시할 값
+
+        console.log("입력값", email);
+
+        $.ajax({
+            type: "POST",
+            url: "/main/signup/email-check",
+            data: {
+                userEmail: email
+            },
+            success: function(response) {
+                console.log("요청 성공", response);
+                if (response === "ok") {
+                    console.log("사용 가능한 이메일 입니다.");
+                    checkResult.text("사용 가능한 이메일 입니다.");
+                    checkResult.css("color", "green");
+                } else {
+                    console.log("중복된 이메일 입니다.");
+                    checkResult.text("중복된 이메일 입니다.");
+                    checkResult.css("color", "red");
+
+                }
+            },
+            error: function(err) {
+                console.error("에러 발생", err);
+            }
+        });
+    }
+    /*]]>*/
+</script>
+</body>
+</html>

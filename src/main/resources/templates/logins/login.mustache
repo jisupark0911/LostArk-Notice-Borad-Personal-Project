@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>로그인</title>
+    <link href="/css/login.css" rel="stylesheet">
+    <style>
+
+    </style>
+</head>
+<body>
+
+<main class="form-signin">
+    <form action="/main/login" method="post">
+        <a href="/main"><img id="homelogo" src="/images/homelogo.jpg"></a>
+
+        <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+        <div class="form-group">
+            <input type="text" class="form-control" id="floatingInput" name="userEmail" placeholder="아이디" required>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" id="floatingPassword" name="userPassword" placeholder="비밀번호" required>
+        </div>
+
+        <button class="btn btn-primary" type="submit">로그인</button>
+    </form>
+    <a href="/main/signup" class="sign-up-href">회원가입</a>
+
+</main>
+{{>layouts/footer}}
+
+
+</body>
+</html>

@@ -1,0 +1,24 @@
+{{>layouts/header}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>캐릭터 검색</title>
+    <script type="text/javascript">
+        function submitForm() {
+            var characterName = document.getElementById("characterName").value;
+            var form = document.getElementById("searchForm");
+            form.action = "/characters/" + encodeURIComponent(characterName);
+            form.submit();
+        }
+    </script>
+</head>
+<body>
+<h1>캐릭터 이름을 입력하세요.</h1>
+<form id="searchForm" method="get" onsubmit="submitForm(); return false;">
+    <label for="characterName">Character Name:</label>
+    <input type="text" id="characterName" name="characterName" required>
+    <button type="submit">Search</button>
+</form>
+</body>
+</html>
+{{>layouts/footer}}

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>헤더</title>
+    <link rel="stylesheet" href="/css/header.css">
+</head>
+<body>
+<div class="HeaderTop">
+
+    <div class="HeaderRight" >
+        {{#loginEmail}}
+            <!-- 로그인 상태일 때 -->
+            <span>
+                {{loginEmail}}님
+                <a href="/profile/logout">로그아웃</a>
+                <a href="/profile/update">내 정보 수정하기</a>
+            </span>
+        {{/loginEmail}}
+        {{^loginEmail}}
+            <!-- 로그인 상태가 아닐 때 -->
+            <a href="/main/login">로그인</a>
+        {{/loginEmail}}
+    </div>
+</div>
+<a href="/main"><img id="homelogo" src="/images/homelogo.jpg"></a>
+<nav class="nav">
+
+    <ul class="first-ul">
+        <li class="dropdown">
+            <a href="#">새소식</a>
+            <ul class="dropdown-content">
+                <li><a href="/news/notices">공지사항</a></li>
+                <li><a href="/news/events">이벤트</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">게임 정보실</a>
+            <ul class="dropdown-content">
+                <li><a href="/character/search">캐릭터 검색</a></li>
+                <li><a href="#">가이드</a></li>
+                <li><a href="#">아이템 사전</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="/community/freeBoard">커뮤니티</a>
+            <ul class="dropdown-content">
+                <li><a href="/community/freeBoard">자유게시판</a></li>
+                <li><a href="/community/jobBoard">직업게시판</a></li>
+                <li><a href="#">길드게시판</a></li>
+                <li><a href="#">공략게시판</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">갤러리</a>
+            <ul class="dropdown-content">
+                <li><a href="#">팬아트</a></li>
+                <li><a href="#">커스터마이징</a></li>
+                <li><a href="#">스크린샷</a></li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="#">고객센터</a>
+            <ul class="dropdown-content">
+                <li><a href="#">FAQ</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+
+{{#msg}}
+    <div class="alert alert-primary alert-dismissible">
+        {{msg}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{{/msg}}
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,257 @@
+{{>layouts/header}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>캐릭터 상세</title>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const tooltips = document.querySelectorAll('p');
+
+
+            const HtmlTags = /<[^>]*>/g;
+            const HtmlEntities = /&lt;[^&gt;]*&gt;/g;
+
+
+            tooltips.forEach(el => {
+                let text = el.innerHTML;
+
+                if (text.includes('Tooltip:')) {
+                    text = text.replace(HtmlTags, '');
+                    text = text.replace(HtmlEntities, '');
+
+
+
+                    el.textContent = text.trim();
+                }
+            });
+        });
+       document.addEventListener("DOMContentLoaded", function() {
+    const descriptions = document.querySelectorAll('p, li');
+    const HtmlTags = /<[^>]*>/g;
+    const HtmlEntities = /&lt;[^&gt;]*&gt;/g;
+    const SpecialCharacters = /[\[\]]/g;
+
+    descriptions.forEach(el => {
+        let text = el.innerHTML;
+
+
+        if (text.includes('Description:')) {
+            text = text.replace(HtmlTags, '');
+            text = text.replace(HtmlEntities, '');
+            text = text.replace(SpecialCharacters, '');
+
+
+            el.textContent = text.trim();
+        }
+    });
+});
+         document.addEventListener("DOMContentLoaded", function() {
+
+        const names = document.querySelectorAll('p, li');
+        const HtmlTags = /<[^>]*>/g;
+        const HtmlEntities = /&lt;[^&gt;]*&gt;/g;
+
+
+        names.forEach(el => {
+            let text = el.innerHTML;
+
+            if (text.includes('Name:')) {
+                text = text.replace(HtmlTags, '');
+                text = text.replace(HtmlEntities, '');
+
+
+
+                el.textContent = text.trim();
+            }
+        });
+    });
+    </script>
+
+</head>
+<body>
+<h1>Character Details for {{characterName}}</h1>
+
+<h2>Profiles</h2>
+{{#characterProfile}}
+    <div>
+        <img src="{{characterImage}}" alt="Character Image">
+        <p>Expedition Level: {{expeditionLevel}}</p>
+        <p>Pvp Grade Name: {{pvpGradeName}}</p>
+        <p>Town Level: {{townLevel}}</p>
+        <p>Town Name: {{townName}}</p>
+        <p>Title: {{title}}</p>
+        <p>Guild Name: {{guildName}}</p>
+        <p>Using Skill Point: {{usingSkillPoint}}</p>
+        <p>Total Skill Point: {{totalSkillPoint}}</p>
+        <p>Server Name: {{serverName}}</p>
+        <p>Character Name: {{characterName}}</p>
+        <p>Character Level: {{characterLevel}}</p>
+        <p>Character Class Name: {{characterClassName}}</p>
+        <p>Item Avg Level: {{itemAvgLevel}}</p>
+        <p>Item Max Level: {{itemMaxLevel}}</p>
+    </div>
+
+    <h2>Stats</h2>
+    <div>
+        {{#stats}}
+            <div>
+                <p>Type: {{type}}</p>
+                <p>Value: {{value}}</p>
+                <p>Tooltip: {{tooltip}}</p>
+            </div>
+        {{/stats}}
+    </div>
+
+    <h2>Tendencies</h2>
+    <div>
+        {{#tendencies}}
+            <div>
+                <p>Type: {{type}}</p>
+                <p>Point: {{point}}</p>
+                <p>Max Point: {{maxPoint}}</p>
+            </div>
+        {{/tendencies}}
+    </div>
+
+    <h2>Ark Passive</h2>
+    <div>
+        <p>Is Ark Passive: {{arkPassive.isArkPassive}}</p>
+        <div>
+            {{#arkPassive.points}}
+                <div>
+                    <p>Name: {{name}}</p>
+                    <p>Value: {{value}}</p>
+                    <p>Tooltip: {{tooltip}}</p>
+                </div>
+            {{/arkPassive.points}}
+        </div>
+    </div>
+{{/characterProfile}}
+
+{{#characterEquipments}}
+    <div>
+        <p>Type: {{type}}</p>
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="Armories Image">
+        <p>Grade: {{grade}}</p>
+    </div>
+{{/characterEquipments}}
+
+{{#characterAvatars}}
+    <div>
+        <p>Type: {{type}}</p>
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="Avatar Image">
+        <p>Grade: {{grade}}</p>
+    </div>
+{{/characterAvatars}}
+
+{{#characterCombatSkills}}
+    <div>
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="Skill Image">
+        <p>Level: {{level}}</p>
+        <p>Type: {{type}}</p>
+        <p>IsAwakening: {{isAwakening}}</p>
+    </div>
+
+    {{#tripods}}
+        <div>
+            <p>Tier: {{tier}}</p>
+            <p>Slot: {{slot}}</p>
+            <p>Name: {{name}}</p>
+            <img src="{{icon}}" alt="tripod Image">
+            <p>Level: {{level}}</p>
+            <p>IsSelected: {{isSelected}}</p>
+        </div>
+    {{/tripods}}
+
+    {{#rune}}
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="Rune Image">
+        <p>Grade: {{grade}}</p>
+    {{/rune}}
+{{/characterCombatSkills}}
+
+{{#characterEngravings}}
+    {{#engraving}}
+        <p>Slot: {{slot}}</p>
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="engraving Image">
+    {{/engraving}}
+
+    {{#engravingEffect}}
+        <img src="{{icon}}" alt="effect Image">
+        <p>Name: {{name}}</p>
+        <p>Description: {{description}}</p>
+    {{/engravingEffect}}
+
+    {{#arkPassiveEffect}}
+        <p>AbilityStoneLevel: {{abilityStoneLevel}}</p>
+        <p>Grade: {{grade}}</p>
+        <p>Level: {{level}}</p>
+        <p>Name: {{name}}</p>
+        <p>Description: {{description}}</p>
+    {{/arkPassiveEffect}}
+{{/characterEngravings}}
+
+{{#characterCards}}
+    {{#Card}}
+        <p>Slot: {{slot}}</p>
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="card Image">
+        <p>Grade: {{grade}}</p>
+        <p>AwakeCount: {{awakeCount}}</p>
+        <p>AwakeTotal: {{awakeTotal}}</p>
+        <p>Tooltip: {{tooltip}}</p>
+    {{/Card}}
+    {{#CardEffect}}
+        <p>Index: {{index}}</p>
+        <p>CardSlot: {{cardSlots}}</p>
+        {{#CardEffect.item}}
+            <p>Name: {{name}}</p>
+            <p>Description: {{description}}</p>
+        {{/CardEffect.item}}
+    {{/CardEffect}}
+{{/characterCards}}
+{{#characterGems}}
+    {{#Gem}}
+        <p>Slot: {{slot}}</p>
+        <p>Name: {{name}}</p>
+        <img src="{{icon}}" alt="gem Image">
+        <p>Level: {{level}}</p>
+        <p>Grade: {{grade}}</p>
+
+    {{/Gem}}
+    {{#armoryGemEffect}}
+        <p>Description: {{description}}</p>
+        {{#gemEffect}}
+            <p>GemSlot: {{gemSlot}}</p>
+            <p>Name: {{name}}</p>
+            <p>Description: {{description}}</p>
+            <p>Option: {{option}}</p>
+            <img src="{{icon}}" alt="gemEffect Image">
+        <!-- <p>Tooltip:</p> 이거 넣으면 오류생김 키가 없다고 뜨는것을 보아 값이 없나봄-->
+        {{/gemEffect}}
+    {{/armoryGemEffect}}
+{{/characterGems}}
+{{#characterCollectibles}}
+    <p>Type: {{type}}</p>
+    <img src="{{icon}}" alt="collectibles Image">
+    <p>Point: {{point}}</p>
+    <p>MaxPoint: {{maxPoint}}</p>
+    {{#CollectiblePoint}}
+        <p>PointName: {{pointName}}</p>
+        <p>Point: {{point}}</p>
+        <p>MaxPoint: {{maxPoint}}</p>
+    {{/CollectiblePoint}}
+
+{{/characterCollectibles}}
+{{#error}}
+    <div style="color: red;">
+        <p>{{error}}</p>
+    </div>
+{{/error}}
+</body>
+</html>
+{{>layouts/footer}}

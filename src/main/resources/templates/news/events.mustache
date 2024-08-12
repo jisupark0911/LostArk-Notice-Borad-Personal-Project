@@ -1,0 +1,21 @@
+{{>layouts/header}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+</head>
+<body>
+<h1>Events</h1>
+<ul>
+    {{#events}}
+        <li>
+            <a href="{{Link}}">{{Title}}</a>
+            <p><img src="{{Thumbnail}}" alt="Event Thumbnail"></p>
+            <p>{{StartDate}} ~ {{EndDate}}</p>
+            <!--rewardDate는 파싱을 해왔을떄 값자체가 null이였음 제공을 안하는듯-->
+        </li>
+    {{/events}}
+</ul>
+</body>
+</html>
+{{>layouts/footer}}

@@ -1,0 +1,23 @@
+{{>layouts/header}}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>캐릭터 정보</title>
+</head>
+<body>
+<h1> {{characterName}}</h1>
+<ul>
+    {{#characters}}
+        <li>
+            <strong>Name:</strong> {{characterName}} <br>
+            <strong>Server:</strong> {{serverName}} <br>
+            <strong>Level:</strong> {{characterLevel}} <br>
+            <strong>Class:</strong> {{characterClassName}} <br>
+            <strong>Avg Item Level:</strong> {{itemAvgLevel}} <br>
+            <strong>Max Item Level:</strong> {{itemMaxLevel}}
+        </li>
+    {{/characters}}
+</ul>
+</body>
+</html>
+{{>layouts/footer}}

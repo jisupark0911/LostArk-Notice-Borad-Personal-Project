@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Member List</title>
+</head>
+<body>
+<h2>list</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>userEmail</th>
+        <th>userPassword</th>
+        <th>userName</th>
+        <th>상세조회</th>
+        <th>삭제</th>
+    </tr>
+    {{#memberList}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{userEmail}}</td>
+            <td>{{userPassword}}</td>
+            <td>{{userName}}</td>
+            <td><a href="/profile/{{id}}">상세조회</a></td>
+            <td><a href="/profile/delete/{{id}}">삭제</a></td>
+        </tr>
+    {{/memberList}}
+</table>
+</body>
+</html>

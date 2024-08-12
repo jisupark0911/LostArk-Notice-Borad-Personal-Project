@@ -1,0 +1,17 @@
+{{>layouts/header}}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+</head>
+<body>
+<h1>공지사항</h1>
+<ul>
+    {{#notices}}
+            <li><a href="{{Link}}">{{Title}}</a></li>
+    {{/notices}}
+</ul>
+</body>
+</html>
+{{>layouts/footer}}
