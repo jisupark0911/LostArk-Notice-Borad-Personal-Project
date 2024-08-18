@@ -8,6 +8,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <title>메인 페이지</title>
+
+    <script type="text/javascript">
+        function submitForm() {
+            var characterName = document.getElementById("characterName").value;
+            var form = document.getElementById("searchForm");
+            form.action = "/characters/" + encodeURIComponent(characterName);
+            form.submit();
+        }
+    </script>
 </head>
 <body>
 {{#loginEmail}}
@@ -20,10 +29,13 @@
        <img id="mainbackimg" src="/images/mainpagebackground.jpg" >
    </div>
    <div class="CharacterSearch">
-       <span id="charsearch">게임 정보실</span>
-       <input type="text" class="charsearch-input" placeholder="캐릭터명을 입력해주세요">
-       <button class="search-button">검색</button>
+       <span id="charsearch">캐릭터 검색</span>
+       <form id="searchForm" method="get" onsubmit="submitForm(); return false;">
+           <input type="text" id="characterName" name="characterName" placeholder="캐릭터명을 입력해주세요" required>
+           <button type="submit">검색</button>
+       </form>
    </div>
+
 
     <div class="MainJob">
     <span id="jobboard">직업게시판</span>

@@ -6,8 +6,10 @@ import com.example.LostArkNoticeBoard.dto.freeBoardForm;
 import com.example.LostArkNoticeBoard.entity.JobBoard;
 import com.example.LostArkNoticeBoard.repository.FreeBoardRepository;
 import com.example.LostArkNoticeBoard.repository.JobBoardRepository;
+import com.example.LostArkNoticeBoard.service.FreeBoardCommentService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import com.example.LostArkNoticeBoard.dto.freeBoardCommentDto;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,8 @@ public class CommunityController {
     private JobBoardRepository jobBoardRepository;
     @Autowired
     private HttpSession session;
+    @Autowired
+    private FreeBoardCommentService freeBoardCommentService;
 
 
     @GetMapping("/community/freeBoard")// freeBoard메인페이지임
@@ -62,7 +66,9 @@ public class CommunityController {
     public String freeBoardshow(@PathVariable Long id, Model model){
         log.info("id = " + id);
         FreeBoard freeBoardEntity = freeBoardRepository.findById(id).orElse(null);
+        List<freeBoardCommentDto> freeBoardCommentDtos = freeBoardCommentService.freeBoardComments(id);
         model.addAttribute("freeBoard", freeBoardEntity);
+        model.addAttribute("freeBoardCommentDtos",freeBoardCommentDtos);
         return "community/freeBoard_show";
     }
 
