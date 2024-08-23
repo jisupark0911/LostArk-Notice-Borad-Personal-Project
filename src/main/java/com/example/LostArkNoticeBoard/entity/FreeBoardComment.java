@@ -2,15 +2,13 @@ package com.example.LostArkNoticeBoard.entity;
 
 import com.example.LostArkNoticeBoard.dto.freeBoardCommentDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 
 @Entity
-
+@Table(name = "freeboardcomment")
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,6 +29,7 @@ public class FreeBoardComment {
     private String body;
 
     public static FreeBoardComment freeBoardCreateComment(freeBoardCommentDto dto, FreeBoard freeBoard) {
+
         if(dto.getId() != null){
             throw new IllegalArgumentException("댓글 생성 실패! 댓글의 id가 없어야 합니다.");
         }
@@ -38,7 +37,7 @@ public class FreeBoardComment {
             throw new IllegalArgumentException("댓글 생성 실패! 게시글의 id가 잘못됐습니다.");
         }
         return new FreeBoardComment(
-                dto.getId(),
+                null, //dto.getId();
                 freeBoard,
                 dto.getNickname(),
                 dto.getBody()

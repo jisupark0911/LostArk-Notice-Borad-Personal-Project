@@ -24,11 +24,10 @@ public class CommentApiController {
     @PostMapping("/community/freeBoard/{freeBoardId}/comments")
     public ResponseEntity<freeBoardCommentDto> freeBoardCreate (@PathVariable Long freeBoardId, @RequestBody freeBoardCommentDto dto){
         freeBoardCommentDto freeBoardCreateDto = freeBoardCommentService.freeBoardCreate(freeBoardId, dto);
-
         return ResponseEntity.status(HttpStatus.OK).body(freeBoardCreateDto);
     }
 
-    @PatchMapping("/community/freeBoard/{id}")
+    @PatchMapping("/community/freeBoard/comments/{id}")
     public ResponseEntity<freeBoardCommentDto> freeBoardUpdate (@PathVariable Long id, @RequestBody freeBoardCommentDto dto){
         freeBoardCommentDto freeBoardUpdatedDto = freeBoardCommentService.freeBoardUpdate(id,dto);
 

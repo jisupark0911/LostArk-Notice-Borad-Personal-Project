@@ -13,7 +13,7 @@ import lombok.ToString;
 @ToString
 public class freeBoardCommentDto {
     private Long id;
-    @JsonProperty("freeBoard_id")
+    @JsonProperty("freeBoardId")
     private Long freeBoardId;
     private String nickname;
     private String body;
@@ -25,5 +25,6 @@ public class freeBoardCommentDto {
                 comment.getNickname(),
                 comment.getBody()
         );
+
     }
 }
