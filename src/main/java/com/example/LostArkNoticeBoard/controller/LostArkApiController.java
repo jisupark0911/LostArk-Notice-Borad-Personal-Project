@@ -3,10 +3,13 @@ package com.example.LostArkNoticeBoard.controller;
 import com.example.LostArkNoticeBoard.Model.*;
 import com.example.LostArkNoticeBoard.Model.Character;
 import com.example.LostArkNoticeBoard.service.LostArkApiService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
@@ -25,6 +28,15 @@ public class LostArkApiController {
 
     public LostArkApiController(LostArkApiService lostArkApiService) {
         this.lostArkApiService = lostArkApiService;
+    }
+
+    @Autowired
+    private HttpSession session;
+
+    @ModelAttribute
+    public void loginNickName(Model model) {
+        String userName = (String) session.getAttribute("userName");
+        model.addAttribute("userName", userName);
     }
 
     @GetMapping("/news/notices")
@@ -75,13 +87,6 @@ public class LostArkApiController {
             CharacterProfile characterProfile = lostArkApiService.getCharacterProfile(characterName);
             model.addAttribute("characterProfile", characterProfile);
 
-            if (characterProfile != null) {
-                //띄울필요 없어도 값을 가져올떄 처리는 같이 해줘야함 그래서 가져온 이후에 null 값 처리
-                characterProfile.setGuildName(Optional.ofNullable(characterProfile.getGuildName()).orElse(""));
-                characterProfile.setGuildMemberGrade(Optional.ofNullable(characterProfile.getGuildMemberGrade()).orElse(""));
-            }
-
-
             CharacterEquipment[] characterEquipments = lostArkApiService.getCharacterEquipment(characterName);
             model.addAttribute("characterEquipments", characterEquipments);
 
@@ -97,15 +102,14 @@ public class LostArkApiController {
             CharacterCard characterCards = lostArkApiService.getCharacterCards(characterName);
             model.addAttribute("characterCards", characterCards);
 
-
             CharacterGem characterGems = lostArkApiService.getCharacterGems(characterName);
             model.addAttribute("characterGems", characterGems);
-
 
             List<CharacterCollectible> characterCollectibles = lostArkApiService.getCharacterCollectibles(characterName);
             model.addAttribute("characterCollectibles", characterCollectibles);
 
-
+            CharacterArkPassive characterArkPassives = lostArkApiService.getCharacterArkPassives(characterName);
+            model.addAttribute("characterArkPassives", characterArkPassives);
 
             model.addAttribute("characterName", characterName);
 

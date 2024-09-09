@@ -21,8 +21,8 @@ public class CharacterCombatSkill {
     @JsonProperty("Type")
     private String type;
 
-    @JsonProperty("IsAwakening")
-    private Boolean isAwakening;
+    @JsonProperty("SkillType")
+    private int skillType;
 
     @JsonProperty("Tripods")
     private List<SkillTripod> tripods;

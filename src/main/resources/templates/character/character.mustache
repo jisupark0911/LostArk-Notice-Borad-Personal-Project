@@ -115,7 +115,6 @@
 
     <h2>Ark Passive</h2>
     <div>
-        <p>Is Ark Passive: {{arkPassive.isArkPassive}}</p>
         <div>
             {{#arkPassive.points}}
                 <div>
@@ -152,7 +151,7 @@
         <img src="{{icon}}" alt="Skill Image">
         <p>Level: {{level}}</p>
         <p>Type: {{type}}</p>
-        <p>IsAwakening: {{isAwakening}}</p>
+        <p>SkillType: {{skillType}}</p>
     </div>
 
     {{#tripods}}
@@ -247,6 +246,20 @@
     {{/CollectiblePoint}}
 
 {{/characterCollectibles}}
+
+{{#characterArkPassives}}
+    <p>IsArkPassive: {{isArkPassive}}</p>
+    {{#ArkPassivePoint}}
+        <p>Name: {{name}}</p>
+        <p>Value: {{value}}</p>
+        <p>Tooltip: {{Tooltip}}</p>
+    {{/ArkPassivePoint}}
+    {{#ArkPassiveEffectSkill}}
+        <p>Name: {{name}}</p>
+        <p>Description: {{description}}</p>
+        <img src="{{icon}}" alt="arkPassive Image">
+    {{/ArkPassiveEffectSkill}}
+{{/characterArkPassives}}
 {{#error}}
     <div style="color: red;">
         <p>{{error}}</p>

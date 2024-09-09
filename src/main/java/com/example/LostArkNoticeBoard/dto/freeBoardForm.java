@@ -1,16 +1,18 @@
 package com.example.LostArkNoticeBoard.dto;
 
 import com.example.LostArkNoticeBoard.entity.FreeBoard;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @ToString
 public class freeBoardForm {
     private Long id; //생성할떄는 자동생성이지만 수정할떄는 어떤아이디인지 알려줘야해서 필요함
     private String title;
     private String content;
+    private String userName;
 
 /*
 
@@ -30,7 +32,7 @@ public class freeBoardForm {
 */
 
     public FreeBoard freeEntity() { // 전달받은 객체를 엔티티에 반환
-        return new FreeBoard(id, title, content);
+        return new FreeBoard(id, title, content,userName);
     }
 
 

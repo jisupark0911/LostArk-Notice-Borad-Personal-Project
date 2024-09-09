@@ -300,7 +300,29 @@ public class LostArkApiService {
     }
 
 
+    public CharacterArkPassive getCharacterArkPassives(String characterName) throws IOException {
+        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
+        String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/arkpassive";
+        log.info("Request URL: " + url);
 
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseBody = reader.lines().collect(Collectors.joining());
+            reader.close();
+            log.info("받은 제이슨 notices 데이터: " + responseBody);
+            return parseCharacterArkPassive(responseBody);
+        } else {
+            log.error("받기 실패: " + responseCode);
+            return null;
+        }
+    }
 
 
 
@@ -360,5 +382,9 @@ public class LostArkApiService {
         return objectMapper.readValue(json, new TypeReference<List<CharacterCollectible>>(){});
     }
 
+    private CharacterArkPassive parseCharacterArkPassive(String responseBody) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(responseBody, CharacterArkPassive.class);
+    }
 
 }

@@ -10,18 +10,18 @@
 <div class="HeaderTop">
 
     <div class="HeaderRight" >
-        {{#loginEmail}}
+        {{#userName}}
             <!-- 로그인 상태일 때 -->
             <span>
-                {{loginEmail}}님
+                {{userName}}님
                 <a href="/profile/logout">로그아웃</a>
                 <a href="/profile/update">내 정보 수정하기</a>
             </span>
-        {{/loginEmail}}
-        {{^loginEmail}}
+        {{/userName}}
+        {{^userName}}
             <!-- 로그인 상태가 아닐 때 -->
             <a href="/main/login">로그인</a>
-        {{/loginEmail}}
+        {{/userName}}
     </div>
 </div>
 <a href="/main"><img id="homelogo" src="/images/homelogo.jpg"></a>
@@ -29,14 +29,14 @@
 
     <ul class="first-ul">
         <li class="dropdown">
-            <a href="#">새소식</a>
+            <a href="/news/notices">새소식</a>
             <ul class="dropdown-content">
                 <li><a href="/news/notices">공지사항</a></li>
                 <li><a href="/news/events">이벤트</a></li>
             </ul>
         </li>
         <li class="dropdown">
-            <a href="#">게임 정보실</a>
+            <a href="/character/search">게임 정보실</a>
             <ul class="dropdown-content">
                 <li><a href="/character/search">캐릭터 검색</a></li>
                 <li><a href="#">가이드</a></li>

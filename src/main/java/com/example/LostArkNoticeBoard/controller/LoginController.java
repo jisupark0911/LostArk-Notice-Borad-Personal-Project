@@ -22,10 +22,18 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private HttpSession session;
+
+    @ModelAttribute
+    public void loginNickName(Model model) {
+        String userName = (String) session.getAttribute("userName");
+        model.addAttribute("userName", userName);
+    }
+
 
     @GetMapping("/main/login")
     public String userLogin() {
-
         return "logins/login";
 
     }
@@ -36,6 +44,7 @@ public class LoginController {
         if (loginresult != null) {
             //login 성공
             session.setAttribute("loginEmail", loginresult.getUserEmail());
+            session.setAttribute("userName", loginresult.getUserName());
             log.info("User email: " + loginresult.getUserEmail());
             log.info("Session attribute loginEmail: " + session.getAttribute("loginEmail"));
 

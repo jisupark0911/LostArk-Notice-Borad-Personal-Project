@@ -22,7 +22,6 @@
                         data-bs-toggle="modal"
                         data-bs-target="#comment-edit-modal"
                         data-bs-id="{{id}}"
-                        data-bs-nickname="{{nickname}}"
                         data-bs-body="{{body}}"
                         data-bs-freeBoard-id="{{freeBoardId}}">
                     수정
@@ -54,8 +53,9 @@
             <div class="modal-body">
                 <form>
                     <div class="mb-3">
-                        <label for="edit-comment-nickname" class="form-label">닉네임</label>
-                        <input type="text" class="form-control" id="edit-comment-nickname">
+                       {{#userName}}
+                           {{userName}}
+                       {{/userName}}
                     </div>
                     <div class="mb-3">
                         <label class="form-label">댓글 내용</label>
@@ -84,11 +84,10 @@
         const triggerBtn = event.relatedTarget;
 
         const id = triggerBtn.getAttribute("data-bs-id");
-        const nickname = triggerBtn.getAttribute("data-bs-nickname");
         const body = triggerBtn.getAttribute("data-bs-body");
         const freeBoardId = triggerBtn.getAttribute("data-bs-freeBoard-id");
 
-        document.querySelector("#edit-comment-nickname").value = nickname;
+
         document.querySelector("#edit-comment-body").value = body;
         document.querySelector("#edit-comment-id").value = id;
         document.querySelector("#edit-comment-freeBoard-id").value = freeBoardId;
@@ -97,7 +96,6 @@
     document.querySelector("#comment-update-btn").addEventListener("click", function() {
         const comment = {
             id: document.querySelector("#edit-comment-id").value,
-            nickname: document.querySelector("#edit-comment-nickname").value,
             body: document.querySelector("#edit-comment-body").value,
             freeBoard_id: document.querySelector("#edit-comment-freeBoard-id").value
         };

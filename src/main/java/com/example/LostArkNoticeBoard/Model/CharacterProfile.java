@@ -1,9 +1,11 @@
 package com.example.LostArkNoticeBoard.Model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+@JsonIgnoreProperties(ignoreUnknown = true) //길드이름과 길드멤버 속성값이 없음
 @Getter
 @Setter
 public class CharacterProfile {
@@ -43,9 +45,6 @@ public class CharacterProfile {
 
     @JsonProperty("Tendencies")
     private List<Tendency> tendencies;
-
-    @JsonProperty("ArkPassive")
-    private ArkPassive arkPassive;
 
     @JsonProperty("ServerName")
     private String serverName;
@@ -247,27 +246,6 @@ public class CharacterProfile {
         private int maxPoint;
     }
 
-    @Setter
-    @Getter
-    public static class ArkPassive {
-        @JsonProperty("IsArkPassive")
-        private boolean isArkPassive;
 
-        @JsonProperty("Points")
-        private List<ArkPassivePoint> points;
-    }
-
-    @Setter
-    @Getter
-    public static class ArkPassivePoint {
-        @JsonProperty("Name")
-        private String name;
-
-        @JsonProperty("Value")
-        private int value;
-
-        @JsonProperty("Tooltip")
-        private String tooltip;
-    }
 
 }

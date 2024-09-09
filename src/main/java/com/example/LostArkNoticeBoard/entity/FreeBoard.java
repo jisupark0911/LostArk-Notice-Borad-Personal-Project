@@ -1,14 +1,13 @@
 package com.example.LostArkNoticeBoard.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor//기본생성자 자동추가
 @ToString
+@Setter
 @Getter
 @Entity
 
@@ -23,6 +22,10 @@ public class FreeBoard {
 
     @Column
     private String content;
+
+    @Column
+    @JsonProperty("username")
+    private String username;
 /*
     public String getId() {
         return id;

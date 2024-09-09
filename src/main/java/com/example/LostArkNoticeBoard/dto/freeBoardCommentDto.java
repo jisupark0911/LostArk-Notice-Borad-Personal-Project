@@ -2,13 +2,11 @@ package com.example.LostArkNoticeBoard.dto;
 
 import com.example.LostArkNoticeBoard.entity.FreeBoardComment;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Getter
 @ToString
 public class freeBoardCommentDto {
