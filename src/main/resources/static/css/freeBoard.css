@@ -1,0 +1,137 @@
+body {
+    background: rgb(43,45,49);
+ }
+    .freeBoard-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .freeBoard-container h1 {
+        text-align: center;
+    }
+
+    .freeBoard-container h2 {
+        margin-left: 17%;
+    }
+    .freeBoard-form{
+        text-align: center;
+    }
+    .freeBoard-table {
+        width: 70%;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    .freeBoard-table th,
+    .freeBoard-table td {
+        border-bottom: 2px solid;
+        border-right: none;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .freeBoard-table th {
+        background-color: #f2f2f2;
+    }
+
+    .freeBoard-table a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+
+    h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+
+        .freeBoard-table th,
+        .freeBoard-table td {
+            border-bottom: 2px solid;
+            border-right: none;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .freeBoard-table th {
+            background-color: #f2f2f2;
+        }
+
+        .freeBoard-table th:nth-child(1),
+        .freeBoard-table td:nth-child(1) {
+            width: 100px;
+        }
+
+        .freeBoard-table th:nth-child(2),
+        .freeBoard-table td:nth-child(2) {
+            width: 70%;
+        }
+
+        .freeBoard-table th:nth-child(3),
+        .freeBoard-table td:nth-child(3) {
+
+            width: 100px;
+        }
+
+
+
+.freeBoard-btn{
+
+      width: 110px;
+      padding: 0;
+      margin: 10px 20px 10px 0;
+      text-align: center;
+      line-height: 50px;
+      color: #FFF;
+      border-radius: 5px;
+      transition: all 0.2s ;
+      background: #5F9CEC;
+}
+
+.freeBoard-btn:hover {
+    background: #4A8BC2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.form-control{
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 25px;
+    outline: none;
+    transition: border-color 0.3s;
+    width: 600px;
+    height: 40px;
+    font-size: 18px;
+}
+
+.freeBoard-main{
+    display: flex;
+    flex-direction: column;
+
+    width: 80%;
+}
+
+.write-button {
+    padding: 10px;
+    font-size: 16px;
+    color: #FFF;
+    border-radius: 5px;
+    transition: all 0.2s ;
+    background: #5F9CEC;
+    text-decoration: none;
+    width: 50px;
+    margin-left: 80%;
+    margin-top: 20px;
+}
+
+.write-button:hover {
+    background: #4A8BC2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+

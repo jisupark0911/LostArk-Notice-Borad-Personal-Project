@@ -12,10 +12,12 @@
             z-index: 1000;
             border-bottom: 1px solid #ccc;
             float;
+            background: rgb(43,45,49);
         }
         .HeaderTop a {
             text-decoration: none;
             color: black;
+
 
         }
         .HeaderTop a:hover {
@@ -36,10 +38,11 @@
             padding: 8px 16px;
             border-radius: 4px;
             transition: background-color 0.3s, color 0.3s;
+            margin: 15px;
         }
         .nav a:hover {
-            background-color: #2980b9;
-                        color: #fff;
+            background-color: none;
+                        color: rgb(155 207 236);
         }
         .nav a{
         text-decoration: none; color: black;

@@ -55,7 +55,7 @@ public class CharacterCard {
 
     @Getter
     @Setter
-    public static class Effect {
+    public static class Effect { //카드세트 효과
         @JsonProperty("Name")
         private String name;
 

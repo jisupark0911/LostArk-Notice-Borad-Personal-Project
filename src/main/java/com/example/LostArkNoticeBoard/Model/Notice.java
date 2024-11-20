@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Getter
 @Setter
 public class Notice {
@@ -19,34 +22,13 @@ public class Notice {
     @JsonProperty("Type")
     private String type;
 
-/*
-    public String getTitle() {
-        return title;
-    }
-    public void setTitle(String title) {
-        this.title = title;
-    }
+public void setDate(Date date) {
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    this.date = sdf.format(date);
+}
 
     public String getDate() {
         return date;
     }
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getLink() {
-        return link;
-    }
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getType() {
-        return type;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
- */
 }
 

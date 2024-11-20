@@ -1,0 +1,49 @@
+ body {
+    background: rgb(43,45,49);
+ }
+ .event-container{
+    margin: 0 auto;
+    width: 80%;
+ }
+ .event-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 30px;
+}
+
+.event-list ul {
+        width: 80%;
+}
+.event-list li {
+    list-style: none;
+    border: 1px solid #aaa;
+    transition: background-color 0.3s ease, border 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 90%;
+    height: 98%;
+
+ }
+.event-list img{
+    margin-top: -15px;
+}
+.event-list li:hover {
+    background-color: rgba(211, 211, 211, 0.5);
+    border: 1px solid #ccc;
+
+}
+
+.event-list p {
+    margin-left: 20px;
+
+}
+.event-list a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.event-container h1 {
+    margin-left: 60px;
+    margin-bottom: 50px;
+}
+

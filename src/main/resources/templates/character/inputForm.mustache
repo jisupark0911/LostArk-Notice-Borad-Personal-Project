@@ -3,22 +3,26 @@
 <html>
 <head>
     <title>캐릭터 검색</title>
-    <script type="text/javascript">
-        function submitForm() {
-            var characterName = document.getElementById("characterName").value;
-            var form = document.getElementById("searchForm");
-            form.action = "/characters/" + encodeURIComponent(characterName);
-            form.submit();
-        }
-    </script>
+
+    <link rel="stylesheet" type="text/css" href="/css/search.css">
 </head>
 <body>
-<h1>캐릭터 이름을 입력하세요.</h1>
-<form id="searchForm" method="get" onsubmit="submitForm(); return false;">
-    <label for="characterName">캐릭터 이름:</label>
-    <input type="text" id="characterName" name="characterName" required>
-    <button type="submit">검색</button>
-</form>
+<div class="search-container">
+    <h1>캐릭터 검색</h1>
+    <form class="searchForm" id="searchForm" method="get" onsubmit="submitForm(); return false;">
+        <input type="text" class="form-control" id="characterName" name="characterName" placeholder="캐릭터명을 입력해주세요" required>
+        <button class="search-btn" type="submit">검색</button>
+    </form>
+</div>
 </body>
 </html>
+
+<script type="text/javascript">
+    function submitForm() {
+        var characterName = document.getElementById("characterName").value;
+        var form = document.getElementById("searchForm");
+        form.action = "/characters/" + encodeURIComponent(characterName);
+        form.submit();
+    }
+</script>
 {{>layouts/footer}}

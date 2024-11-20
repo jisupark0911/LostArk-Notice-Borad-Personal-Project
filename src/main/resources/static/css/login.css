@@ -1,3 +1,6 @@
+body {
+    background: rgb(43,45,49);
+ }
 
 body {
     height: 100vh;
@@ -76,9 +79,9 @@ body {
     background-color: #007bff;
     border-color: #007bff;
     border-radius: 10px;
-      padding: 12px 24px;
-        font-size: 16px;
-        line-height: 1;
+    padding: 12px 24px;
+    font-size: 16px;
+    line-height: 1;
 }
 
 .btn-primary:hover {
@@ -91,9 +94,9 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(38, 143, 255, 0.5);
 }
 #homelogo {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            object-position: center center;
-        }
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center center;
+}
 

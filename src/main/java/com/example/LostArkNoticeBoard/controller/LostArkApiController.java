@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,10 +89,16 @@ public class LostArkApiController {
             model.addAttribute("characterProfile", characterProfile);
 
             CharacterEquipment[] characterEquipments = lostArkApiService.getCharacterEquipment(characterName);
-            model.addAttribute("characterEquipments", characterEquipments);
+            List<CharacterEquipment> leftEquipments = Arrays.asList(characterEquipments).subList(0, 6);
+            List<CharacterEquipment> rightEquipments = Arrays.asList(characterEquipments).subList(6, 13);
+            model.addAttribute("leftEquipments", leftEquipments);
+            model.addAttribute("rightEquipments", rightEquipments);
 
             CharacterAvatar[] characterAvatars = lostArkApiService.getCharacterAvatars(characterName);
-            model.addAttribute("characterAvatars", characterAvatars);
+            List<CharacterAvatar> leftAvatars = Arrays.asList(characterAvatars).subList(0, 6);
+            List<CharacterAvatar> rightAvatars = Arrays.asList(characterAvatars).subList(6, characterAvatars.length);
+            model.addAttribute("leftAvatars", leftAvatars);
+            model.addAttribute("rightAvatars", rightAvatars);
 
             List<CharacterCombatSkill> characterCombatSkills = lostArkApiService.getCharacterCombatSkills(characterName);
             model.addAttribute("characterCombatSkills", characterCombatSkills);
@@ -112,6 +119,7 @@ public class LostArkApiController {
             model.addAttribute("characterArkPassives", characterArkPassives);
 
             model.addAttribute("characterName", characterName);
+
 
         } catch (IOException e) {
             log.error("캐릭터 정보를 가져오는 데 실패했습니다.", e);

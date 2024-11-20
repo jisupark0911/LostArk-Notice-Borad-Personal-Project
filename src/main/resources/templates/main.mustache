@@ -7,32 +7,39 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css">
     <title>메인 페이지</title>
 
-    <script type="text/javascript">
-        function submitForm() {
-            var characterName = document.getElementById("characterName").value;
-            var form = document.getElementById("searchForm");
-            form.action = "/characters/" + encodeURIComponent(characterName);
-            form.submit();
-        }
-    </script>
 </head>
 <body>
 {{#loginEmail}}
 <p>Session 값 확인: {{loginEmail}}</p>
- <!-- 컨트롤러의 loginEmail 정보를 가져옴-->
 {{/loginEmail}}
 <div class="frame-container">
    <div class="MainEvent">
-       <span id="MainEvent-font">이벤트</span>
-       <img id="mainbackimg" src="/images/mainpagebackground.jpg" >
+       <div class="swiper-container">
+           <div class="swiper-wrapper">
+               {{#events}}
+                   <div class="swiper-slide">
+                       <p><a href="{{Link}}" target='_blank'><img src="{{Thumbnail}}" alt="Event Thumbnail"></a></p>
+                       <div class="swiper-title"> <a href="{{Link}}" target='_blank'>{{Title}}</a></div>
+                   </div>
+               {{/events}}
+           </div>
+
+           <div class="swiper-pagination"></div>
+           <div class="swiper-control">
+               <div class="swiper-button-next"></div>
+               <div class="swiper-button-prev"></div>
+           </div>
+       </div>
    </div>
+
    <div class="CharacterSearch">
-       <span id="charsearch">캐릭터 검색</span>
+       <span class="searchText">캐릭터 검색</span>
        <form id="searchForm" method="get" onsubmit="submitForm(); return false;">
-           <input type="text" id="characterName" name="characterName" placeholder="캐릭터명을 입력해주세요" required>
-           <button type="submit">검색</button>
+           <input type="text" id="characterName" class="form-control" name="characterName" placeholder="캐릭터명을 입력해주세요" required>
+           <button id="mainSearchButton" class="mainSearch-btn" type="submit">검색</button>
        </form>
    </div>
 
@@ -107,10 +114,20 @@
        </div>
    </div>
    </div>
+    <div class="MainNews-container">
+    <span id="NewNews-font">공지사항</span>
     <div class="MainNews">
-      <span id="NewNews-font">새 소식</span>
-
+        {{#notices}}
+            <li class="MainNew-list">
+                <span class="type">{{Type}}</span>
+                <a href="{{Link}}" target='_blank'>{{Title}}</a>
+                <span class="mainDate">{{Date}}</span>
+            </li>
+        {{/notices}}
+        <a href="/news/notices" id="noticesPlus">공지사항 더보기</a>
     </div>
+    </div>
+
 
     <div class="MainGuide">
       <span id="GameGuide-font">게임 가이드</span>
@@ -118,6 +135,36 @@
 
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        autoplay: {
+            display: 10000,
+        },
+        loop: true,
+        slidesPerView: 1,
+        spaceBetween: 10,
+        centerSlides: true,
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+
+    });
+</script>
+
+<script type="text/javascript">
+    function submitForm() {
+        var characterName = document.getElementById("characterName").value;
+        var form = document.getElementById("searchForm");
+        form.action = "/characters/" + encodeURIComponent(characterName);
+        form.submit();
+    }
+</script>
 </body>
 </html>
 {{>layouts/footer}}

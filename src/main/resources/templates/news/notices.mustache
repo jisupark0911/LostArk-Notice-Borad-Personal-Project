@@ -3,15 +3,40 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>공지사항</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/notice.css">
 </head>
 <body>
+<div class="notice-container">
+<div class="notice-main">
 <h1>공지사항</h1>
-<ul>
-    {{#notices}}
-            <li><a href="{{Link}}">{{Title}}</a></li>
-    {{/notices}}
-</ul>
+    <table class="notice-table">
+        <thead>
+        <tr>
+            <th>유형</th>
+            <th>제목</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#notices}}
+            <tr>
+                <td>{{Type}}</td>
+                <td><a href="{{Link}}" target='_blank'>{{Title}}</a></td>
+                <td class="date">{{Date}}</td>
+            </tr>
+        {{/notices}}
+        </tbody>
+    </table>
+
+</div>
+</div>
 </body>
 </html>
+<script>
+    const paragraphs = document.querySelectorAll('span');
+    paragraphs.forEach(paragraph => {
+        paragraph.innerHTML = paragraph.innerHTML.replace(/T/g, ' '); //Date 사이에 T가 들어가서 사용
+    });
+</script>
 {{>layouts/footer}}

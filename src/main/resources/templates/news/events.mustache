@@ -3,19 +3,30 @@
 <html>
 <head>
     <title>Events</title>
+    <link rel="stylesheet" type="text/css" href="/css/event.css">
 </head>
 <body>
-<h1>Events</h1>
-<ul>
+
+<div class="event-container">
+    <h1>이벤트</h1>
+<ul class="event-list">
     {{#events}}
+        <a href="{{Link}}" target='_blank'>
         <li>
-            <a href="{{Link}}">{{Title}}</a>
-            <p><img src="{{Thumbnail}}" alt="Event Thumbnail"></p>
+            <img src="{{Thumbnail}}" alt="Event Thumbnail">
+            <h3><p>{{Title}}</p></h3>
             <p>{{StartDate}} ~ {{EndDate}}</p>
-            <!--rewardDate는 파싱을 해왔을떄 값자체가 null이였음 제공을 안하는듯-->
         </li>
+        </a>
     {{/events}}
 </ul>
+</div>
 </body>
 </html>
+<script>
+    const paragraphs = document.querySelectorAll('p');
+    paragraphs.forEach(paragraph => {
+        paragraph.innerHTML = paragraph.innerHTML.replace(/T/g, ' '); //Date 사이에 T가 들어가서 사용
+    });
+</script>
 {{>layouts/footer}}
