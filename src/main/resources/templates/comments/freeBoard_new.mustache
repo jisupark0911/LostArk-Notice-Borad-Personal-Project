@@ -6,6 +6,25 @@
         #comments-new {
              background: rgb(43,45,49)!important;
         }
+        .write-button {
+             padding: 10px;
+             font-size: 16px;
+             color: #FFF;
+             border-radius: 5px;
+             transition: all 0.2s;
+             background: #5F9CEC;
+             text-decoration: none;
+             width: 55px;
+             align-items: center;
+             justify-content: center;
+        }
+
+        .write-button:hover {
+             color: #FFF;
+             background: #4A8BC2;
+             transform: scale(1.05);
+             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -26,13 +45,15 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">댓글 내용</label>
-                <textarea type="text" class="form-control" rows="3" id="new-comment-body"></textarea>
+                <textarea type="text" class="form-control" rows="3" id="new-comment-body"
+                    {{^userName}} onclick="window.location.href='/main/login';" {{/userName}}></textarea>
+
             </div>
             {{#freeBoard}}
                 <input type="hidden" id="new-comment-freeBoard-id" value="{{id}}">
             {{/freeBoard}}
 
-            <button type="button" class="btn btn-primary" id="comment-create-btn">작성</button>
+            <button type="button" class="write-button" id="comment-create-btn">작성</button>
         </form>
     </div>
 </div>

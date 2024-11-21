@@ -1,7 +1,10 @@
 package com.example.LostArkNoticeBoard.dto;
 
 import com.example.LostArkNoticeBoard.entity.FreeBoard;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
+
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,26 +16,14 @@ public class freeBoardForm {
     private String title;
     private String content;
     private String userName;
-
-/*
-
-    public freeBoardForm(String title, String content){ //전송받은 제목과 내용을 저장하는 생성자
-        this.title = title;
-        this.content = content;
-    }
-
-
-    @Override
-    public String toString() {
-        return "freeBoardForm{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
-*/
+    private String userEmail;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
+    private Long viewCount = 0L;
+    private Long likeCount = 0L;
 
     public FreeBoard freeEntity() { // 전달받은 객체를 엔티티에 반환
-        return new FreeBoard(id, title, content,userName);
+        return new FreeBoard(id, title, content,userName,userEmail,createdAt,viewCount,likeCount);
     }
 
 

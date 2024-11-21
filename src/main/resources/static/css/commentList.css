@@ -1,0 +1,22 @@
+#comments-list {
+    background: rgb(43,45,49)!important;
+}
+
+.card-header {
+    background: rgb(43,45,49)!important;
+    width: 100%;
+}
+
+.card-body {
+    background: rgb(43,45,49)!important;
+    width: 100%;
+}
+
+.comment-list {
+    display: flex;
+    padding: 10px;
+    margin: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    flex-direction: column;
+}

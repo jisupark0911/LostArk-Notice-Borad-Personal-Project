@@ -1,0 +1,43 @@
+body {
+    background: rgb(43,45,49)!important;
+}
+
+.freeBoardNew-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 50%;
+    margin-top: 50px;
+    border: 2px solid #ccc;
+    padding: 10px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.write-button {
+    padding: 10px;
+    font-size: 16px;
+    color: #FFF;
+    border-radius: 5px;
+    transition: all 0.2s ;
+    background: #5F9CEC;
+    text-decoration: none;
+    width: 55px;
+    margin-left: 85%;
+
+}
+
+.write-button:hover {
+    color: #FFF;
+    background: #4A8BC2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.textarea {
+     white-space: pre-wrap;
+     word-wrap: break-word;
+}

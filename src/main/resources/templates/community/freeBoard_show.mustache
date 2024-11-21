@@ -12,7 +12,7 @@
     <div class="show-head">
         {{#freeBoard}}
             <span class="show-id">{{id}}</span>
-            <sapn> 작성일 </sapn>
+            <span> 작성일 </span>
             <span class="show-username">{{username}}</span>
         {{/freeBoard}}
     </div>
@@ -29,16 +29,30 @@
         {{/freeBoard}}
     </div>
 
-    <div class="edl-controller">
-        <a href="/community/freeBoard" class="write-button">목록</a>
-        <div class="edit-delete-buttons">
-            <a href="/community/freeBoard/{{freeBoard.id}}/edit" class="write-button">수정</a>
-            <a href="/community/freeBoard/{{freeBoard.id}}/delete" class="write-button">삭제</a>
-        </div>
+    <!-- 좋아요 버튼 토글 -->
+    <div class="like-controller">
+        <form action="/community/freeBoard/{{freeBoard.id}}/toggleLike" method="post">
+            <!-- 좋아요 상태에 따라 버튼 텍스트 변경 -->
+            <button type="submit" class="like-button">
+                {{#isLiked}}좋아요 취소{{/isLiked}}{{^isLiked}}좋아요{{/isLiked}}
+            </button>
+        </form>
     </div>
 
-{{>comments/freeBoard_comments}}
+    <!-- 수정/삭제 버튼 표시: 작성자일 경우에만 보여줌 -->
+    <div class="edl-controller">
+        <a href="/community/freeBoard" class="write-button">목록</a>
+        {{#isAuthor}}
+            <div class="edit-delete-buttons">
+                <a href="/community/freeBoard/{{freeBoard.id}}/edit" class="write-button">수정</a>
+                <a href="/community/freeBoard/{{freeBoard.id}}/delete" class="write-button">삭제</a>
+            </div>
+        {{/isAuthor}}
+    </div>
+
+    {{>comments/freeBoard_comments}}
 </div>
+
 </body>
 </html>
 {{>layouts/footer}}

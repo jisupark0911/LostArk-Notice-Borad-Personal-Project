@@ -3,12 +3,16 @@ package com.example.LostArkNoticeBoard.controller;
 import com.example.LostArkNoticeBoard.dto.jobBoardForm;
 import com.example.LostArkNoticeBoard.entity.FreeBoard;
 import com.example.LostArkNoticeBoard.dto.freeBoardForm;
+import com.example.LostArkNoticeBoard.entity.FreeBoardLike;
 import com.example.LostArkNoticeBoard.entity.JobBoard;
+import com.example.LostArkNoticeBoard.repository.FreeBoardLikeRepository;
 import com.example.LostArkNoticeBoard.repository.FreeBoardRepository;
 import com.example.LostArkNoticeBoard.repository.JobBoardRepository;
 import com.example.LostArkNoticeBoard.service.FreeBoardCommentService;
 import com.example.LostArkNoticeBoard.service.FreeBoardService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import com.example.LostArkNoticeBoard.dto.freeBoardCommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j // 로깅사용가능
 @Controller
@@ -35,6 +40,8 @@ public class CommunityController {
     private FreeBoardCommentService freeBoardCommentService;
     @Autowired
     private FreeBoardService freeBoardService;
+    @Autowired
+    private FreeBoardLikeRepository freeBoardLikeRepository;
 
 
 
@@ -65,28 +72,58 @@ public class CommunityController {
     }
 
     @PostMapping("/community/freeBoard/create")
-    public String freeBoardcreate(freeBoardForm form,Model model,HttpSession session){ //form은 dto를 가르킨다.
-        FreeBoard freeBoard = form.freeEntity();//dto를 엔티티로 변환
+    public String freeBoardcreate(freeBoardForm form, Model model, HttpSession session) {
+        FreeBoard freeBoard = form.freeEntity(); // DTO를 엔티티로 변환
         log.info(freeBoard.toString());
+
+        String userEmail = (String) session.getAttribute("loginEmail");
         String userName = (String) session.getAttribute("userName");
         model.addAttribute("userName", userName);
+
         freeBoard.setUsername(userName);
+        freeBoard.setUserEmail(userEmail);
+
         FreeBoard freeBoardsave = freeBoardRepository.save(freeBoard);
         freeBoardRepository.save(freeBoard);
 
         return "redirect:/community/freeBoard/" + freeBoardsave.getId();
     }
 
-    @GetMapping("/community/freeBoard/{id}")//해당번호 게시글 조회
-    public String freeBoardshow(@PathVariable Long id, Model model){
+
+    @GetMapping("/community/freeBoard/{id}")
+    public String freeBoardshow(@PathVariable Long id, Model model, HttpSession session) {
         log.info("id = " + id);
         FreeBoard freeBoardEntity = freeBoardRepository.findById(id).orElse(null);
+
+        if (freeBoardEntity != null) {
+            freeBoardEntity.setViewCount(freeBoardEntity.getViewCount() + 1);
+            freeBoardRepository.save(freeBoardEntity);
+        }
+
+        String userEmail = (String) session.getAttribute("loginEmail");
+        boolean isAuthor = false;
+        if (userEmail != null && userEmail.equals(freeBoardEntity.getUserEmail())) {
+            isAuthor = true;
+        }
+
+        boolean isLiked = false;
+        if (userEmail != null) {
+            Optional<FreeBoardLike> existingLike = freeBoardLikeRepository.findByUserEmailAndFreeBoardId(userEmail, id);
+            isLiked = existingLike.isPresent();
+        }
+
         List<freeBoardCommentDto> freeBoardCommentDtos = freeBoardCommentService.freeBoardComments(id);
+
         model.addAttribute("freeBoard", freeBoardEntity);
-        model.addAttribute("freeBoardCommentDtos",freeBoardCommentDtos);
+        model.addAttribute("freeBoardCommentDtos", freeBoardCommentDtos);
+        model.addAttribute("isAuthor", isAuthor);
+        model.addAttribute("isLiked", isLiked);
 
         return "community/freeBoard_show";
     }
+
+
+
 
     @GetMapping("/community/freeBoard/{id}/edit")
     public String freeBoardedit(@PathVariable Long id, Model model){
@@ -97,15 +134,30 @@ public class CommunityController {
     }
 
     @PostMapping("/community/freeBoard/update")
-    public String freeBoardupdate(freeBoardForm form){
+    public String freeBoardupdate(freeBoardForm form, Model model, HttpSession session){
         log.info(form.toString());
+
+        // form에서 엔티티로 변환
         FreeBoard freeBoardEntity = form.freeEntity();
+        String userName = (String) session.getAttribute("userName");
+        String userEmail = (String) session.getAttribute("loginEmail");
+        freeBoardEntity.setUserEmail(userEmail);
+        freeBoardEntity.setUsername(userName);
+        model.addAttribute("userName", userName);
+
         FreeBoard freeBoardtarget = freeBoardRepository.findById(freeBoardEntity.getId()).orElse(null);
+
         if(freeBoardtarget != null){
-            freeBoardtarget = freeBoardRepository.save(freeBoardEntity);
+            freeBoardtarget.setTitle(freeBoardEntity.getTitle());
+            freeBoardtarget.setContent(freeBoardEntity.getContent());
+            freeBoardtarget.setUserEmail(freeBoardEntity.getUserEmail());
+            freeBoardtarget.setUsername(freeBoardEntity.getUsername());
+            freeBoardRepository.save(freeBoardtarget);
         }
-        return "redirect:/community/freeBoard/"+freeBoardEntity.getId();
+
+        return "redirect:/community/freeBoard/" + freeBoardEntity.getId();
     }
+
 
     @GetMapping("/community/freeBoard/{id}/delete")
     public String freeBoarddelete(@PathVariable Long id, RedirectAttributes rttr){
@@ -118,6 +170,46 @@ public class CommunityController {
         }
         return "redirect:/community/freeBoard";
     }
+
+
+    @PostMapping("/community/freeBoard/{id}/toggleLike")
+    @Transactional
+    public String toggleLike(@PathVariable Long id, HttpSession session) {
+        String userEmail = (String) session.getAttribute("loginEmail");
+
+        if (userEmail == null) {
+            return "redirect:/logins/login";
+        }
+
+        FreeBoard freeBoardEntity = freeBoardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+
+        Optional<FreeBoardLike> existingLike = freeBoardLikeRepository.findByUserEmailAndFreeBoardId(userEmail, id);
+
+        existingLike.ifPresentOrElse(
+                like -> {
+                    freeBoardLikeRepository.delete(like);
+                    freeBoardEntity.setLikeCount(freeBoardEntity.getLikeCount() - 1);
+                },
+                () -> {
+                    FreeBoardLike newLike = new FreeBoardLike();
+                    newLike.setUserEmail(userEmail);
+                    newLike.setFreeBoard(freeBoardEntity);
+                    freeBoardLikeRepository.save(newLike);
+                    freeBoardEntity.setLikeCount(freeBoardEntity.getLikeCount() + 1);
+                }
+        );
+
+        freeBoardRepository.save(freeBoardEntity);
+
+        return "redirect:/community/freeBoard/" + id;
+    }
+
+
+
+
+
+
 
     @GetMapping("/community/jobBoard")
     public String jobBoardindex(Model model){

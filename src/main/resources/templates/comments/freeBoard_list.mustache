@@ -10,25 +10,17 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/css/commentList.css">
     <style>
-        #comments-list {
-            background: rgb(43,45,49)!important;
-        }
-        .card-header {
-            background: rgb(43,45,49)!important;
-        }
-        .card-body {
-            background: rgb(43,45,49)!important;
-        }
         #new-comment-body {
             background: rgb(43,45,49)!important;
         }
     </style>
 </head>
 <body>
-<div id="comments-list">
+<div class="comment-container" id="comments-list">
     {{#freeBoardCommentDtos}}
-        <div class="card m-2" id="comments-{{id}}">
+        <div class="comment-list" id="comments-{{id}}">
             <div class="card-header">
                 {{nickname}}
                 <button type="button"
