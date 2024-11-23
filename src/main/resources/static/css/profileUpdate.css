@@ -1,0 +1,79 @@
+body {
+    background: rgb(43,45,49)!important;
+}
+
+.write-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #FFF;
+    background: #5F9CEC;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    transition: all 0.2s;
+    width: 100%;
+}
+
+.write-button:hover {
+    background: #4A8BC2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.profileUpdate-container {
+    width: 100%;
+    max-width: 350px;
+    padding: 15px;
+    margin: auto;
+    text-align: center;
+}
+
+.profileUpdate-container form {
+    background-color: #343a40;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.profileUpdate-container .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.profileUpdate-container .form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.profileUpdate-container .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    height: 50%;
+    box-sizing: border-box;
+}
+
+.profileUpdate-container input[type="text"],
+.profileUpdate-container input[type="password"] {
+    margin-bottom: 10px;
+}
+
+.profileUpdate-container a {
+    display: block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.profileUpdate-container img {
+    margin-bottom: 10px;
+}
+
+.profileUpdate-container h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: normal;
+}

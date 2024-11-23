@@ -11,9 +11,9 @@
 <div class="show-container">
     <div class="show-head">
         {{#freeBoard}}
-            <span class="show-id">{{id}}</span>
-            <span> 작성일 </span>
-            <span class="show-username">{{username}}</span>
+            <span class="show-id">{{username}}</span>
+            <span style="margin-left: 60px;">작성일: {{createdAt}}</span>
+            <span class="show-username"> 좋아요: {{likeCount}} 조회수: {{viewCount}}</span>
         {{/freeBoard}}
     </div>
 
@@ -29,17 +29,24 @@
         {{/freeBoard}}
     </div>
 
-    <!-- 좋아요 버튼 토글 -->
-    <div class="like-controller">
+    <div class="like-container">
         <form action="/community/freeBoard/{{freeBoard.id}}/toggleLike" method="post">
-            <!-- 좋아요 상태에 따라 버튼 텍스트 변경 -->
             <button type="submit" class="like-button">
-                {{#isLiked}}좋아요 취소{{/isLiked}}{{^isLiked}}좋아요{{/isLiked}}
+                {{#userName}}
+                    {{#isLiked}}좋아요 취소{{/isLiked}}
+                    {{^isLiked}}좋아요{{/isLiked}}
+                {{/userName}}
+                {{^userName}}
+                    <a href="/main/login"
+                       onclick="alert('로그인 후 좋아요를 눌러주세요!'); setTimeout(function(){ window.location.href='/main/login'; }, 100); return false;"
+                       style="text-decoration: none; color: inherit; background: none; border: none; outline: none; cursor: default;">
+                        좋아요
+                    </a>
+                {{/userName}}
             </button>
         </form>
     </div>
 
-    <!-- 수정/삭제 버튼 표시: 작성자일 경우에만 보여줌 -->
     <div class="edl-controller">
         <a href="/community/freeBoard" class="write-button">목록</a>
         {{#isAuthor}}
@@ -52,7 +59,12 @@
 
     {{>comments/freeBoard_comments}}
 </div>
-
 </body>
 </html>
+<script>
+    const paragraphs = document.querySelectorAll('span');
+    paragraphs.forEach(paragraph => {
+        paragraph.innerHTML = paragraph.innerHTML.replace(/T/g, ' ');
+    });
+</script>
 {{>layouts/footer}}

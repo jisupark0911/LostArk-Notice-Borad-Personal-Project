@@ -23,6 +23,7 @@
         <div class="comment-list" id="comments-{{id}}">
             <div class="card-header">
                 {{nickname}}
+                {{#isAuthor}}
                 <button type="button"
                         class="btn btn-sm btn-outline-primary"
                         data-bs-toggle="modal"
@@ -36,6 +37,7 @@
                         class="btn btn-sm btn-outline-danger comment-delete-btn"
                         data-comment-id="{{id}}">삭제
                 </button>
+                {{/isAuthor}}
             </div>
             <div class="card-body">
                 {{body}}
@@ -152,7 +154,7 @@
                         target.remove();
                     }
 
-                    const msg = `${commentId}번 댓글을 삭제했습니다.`;
+                    const msg = 댓글을 삭제했습니다.`;
                     alert(msg);
                     window.location.reload();
                 })

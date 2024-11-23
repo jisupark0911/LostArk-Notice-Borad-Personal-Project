@@ -112,12 +112,17 @@ public class CommunityController {
             isLiked = existingLike.isPresent();
         }
 
+
         List<freeBoardCommentDto> freeBoardCommentDtos = freeBoardCommentService.freeBoardComments(id);
 
         model.addAttribute("freeBoard", freeBoardEntity);
         model.addAttribute("freeBoardCommentDtos", freeBoardCommentDtos);
         model.addAttribute("isAuthor", isAuthor);
         model.addAttribute("isLiked", isLiked);
+
+        model.addAttribute("viewCount", freeBoardEntity.getViewCount());
+        model.addAttribute("likeCount", freeBoardEntity.getLikeCount());
+        model.addAttribute("createdAt", freeBoardEntity.getCreatedAt());
 
         return "community/freeBoard_show";
     }

@@ -24,7 +24,7 @@
         <tr>
             <th scope="col">번호</th>
             <th scope="col">제목</th>
-            <th scope="col">닉네임</th>
+            <th scope="col">작성자</th>
         </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
         {{#freeBoardResults}}
             <tr>
                 <td>{{id}}</td>
-                <td><a href="/community/freeBoard/{{id}}" class="link-primary">{{title}}</a></td>
+                <td class="title-td"><a href="/community/freeBoard/{{id}}" class="link-primary">{{title}}</a></td>
                 <td>{{username}}</td>
             </tr>
         {{/freeBoardResults}}
@@ -40,15 +40,21 @@
         {{#freeBoardList}}
             <tr>
               <td>{{id}}</td>
-               <td><a href="/community/freeBoard/{{id}}" class="link-primary">{{title}}</a></td>
+               <td class="title-td"><a href="/community/freeBoard/{{id}}" class="link-primary">{{title}}</a></td>
                <td>{{username}}</td>
             </tr>
         {{/freeBoardList}}
         </tbody>
     </table>
 
-
+        {{#userName}}
         <a href="/community/freeBoard/new" class="write-button">글작성</a>
+        {{/userName}}
+
+        {{^userName}}
+            <a href="/main/login" onclick="alert('로그인 후 글을 작성해주세요!'); setTimeout(function(){ window.location.href='/main/login'; }, 100);
+             return false;" class="write-button">글작성</a>
+        {{/userName}}
     </div>
 </div>
 
