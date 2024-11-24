@@ -12,4 +12,5 @@ public interface FreeBoardRepository extends CrudRepository<FreeBoard, Long> {
 
     List<FreeBoard> findByTitleContaining(String title);
     List<FreeBoard> findByContentContaining(String content);
+    List<FreeBoard> findAllByOrderByCreatedAtDesc();
 }

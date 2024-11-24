@@ -58,8 +58,7 @@ public class CommunityController {
 
     @GetMapping("/community/freeBoard")
     public String freeBoardIndex(Model model, HttpSession session) {
-
-        List<FreeBoard> freeBoardList = freeBoardRepository.findAll();
+        List<FreeBoard> freeBoardList = freeBoardService.getFreeBoardList(); //최신순으로 추출
         model.addAttribute("freeBoardList", freeBoardList);
 
         return "community/freeBoard";
@@ -171,7 +170,6 @@ public class CommunityController {
         log.info(freeBoardtarget.toString());
         if(freeBoardtarget != null) {
             freeBoardRepository.delete(freeBoardtarget);
-            rttr.addFlashAttribute("msg","삭제됐습니다.");
         }
         return "redirect:/community/freeBoard";
     }

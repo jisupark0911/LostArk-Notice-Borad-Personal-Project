@@ -35,4 +35,12 @@ public class FreeBoardService {
 
         return resultSet.stream().collect(Collectors.toList());
     }
+
+    public FreeBoardService(FreeBoardRepository freeBoardRepository) {
+        this.freeBoardRepository = freeBoardRepository;
+    }
+
+    public List<FreeBoard> getFreeBoardList() {
+        return freeBoardRepository.findAllByOrderByCreatedAtDesc();
+    }
 }

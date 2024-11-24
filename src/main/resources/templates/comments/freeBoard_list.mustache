@@ -39,7 +39,7 @@
                 </button>
                 {{/isAuthor}}
             </div>
-            <div class="card-body">
+            <div class="card-body" style="white-space: pre-line;">
                 {{body}}
             </div>
         </div>
@@ -68,7 +68,7 @@
                     <div class="mb-3">
                         <label class="form-label">댓글 내용</label>
                         <textarea class="form-control" rows="3"
-                                  id="edit-comment-body"></textarea>
+                                  id="edit-comment-body" maxlength="255"></textarea>
                     </div>
                     {{#freeBoard}}
                         <input type="hidden" id="edit-comment-id">
@@ -154,7 +154,7 @@
                         target.remove();
                     }
 
-                    const msg = 댓글을 삭제했습니다.`;
+                    const msg = `댓글을 삭제했습니다.`;
                     alert(msg);
                     window.location.reload();
                 })

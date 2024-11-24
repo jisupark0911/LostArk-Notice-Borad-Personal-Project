@@ -2,6 +2,8 @@ package com.example.LostArkNoticeBoard.controller;
 
 import com.example.LostArkNoticeBoard.Model.Event;
 import com.example.LostArkNoticeBoard.Model.Notice;
+import com.example.LostArkNoticeBoard.entity.FreeBoard;
+import com.example.LostArkNoticeBoard.service.FreeBoardService;
 import com.example.LostArkNoticeBoard.service.LostArkApiService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -23,6 +26,9 @@ public class MainController {
 
     @Autowired
     private LostArkApiService lostArkApiService;
+
+    @Autowired
+    private FreeBoardService freeBoardService;
 
 
     @ModelAttribute
@@ -37,9 +43,16 @@ public class MainController {
             Event[] events = lostArkApiService.getEvents();
             model.addAttribute("events", events);
             Notice[] notices = lostArkApiService.getNotices();
-            // 상위 5개만 추출
+            // 상위 6개만 추출
             Notice[] limitedNotices = Arrays.copyOf(notices, Math.min(notices.length, 6));
             model.addAttribute("notices", limitedNotices);
+
+            List<FreeBoard> freeBoardList = freeBoardService.getFreeBoardList();
+            // 자유게시판 상위 6개만 추출
+            List<FreeBoard> limitFreeBoards = freeBoardList.stream()
+                    .limit(6)
+                    .toList();
+            model.addAttribute("limitFreeBoards", limitFreeBoards);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -12,20 +12,20 @@
     <div class="show-head">
         {{#freeBoard}}
             <span class="show-id">{{username}}</span>
-            <span style="margin-left: 60px;">작성일: {{createdAt}}</span>
+            <span style="margin-left: 60px;">작성시간: {{createdAt}}</span>
             <span class="show-username"> 좋아요: {{likeCount}} 조회수: {{viewCount}}</span>
         {{/freeBoard}}
     </div>
 
     <div class="show-name">
         {{#freeBoard}}
-            <span class="show-title">{{title}}</span>
+            <span class="show-title" style="width: 830px; word-wrap: break-word; overflow-wrap: break-word;">{{title}}</span>
         {{/freeBoard}}
     </div>
 
     <div class="show-main">
         {{#freeBoard}}
-            <span class="show-content">{{content}}</span>
+            <span class="show-content" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word;">{{content}}</span>
         {{/freeBoard}}
     </div>
 

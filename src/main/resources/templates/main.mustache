@@ -44,76 +44,23 @@
    </div>
 
 
-    <div class="MainJob">
-    <span id="jobboard">직업게시판</span>
-   <div class="mainJob-board">
-       <table class="table-container">
 
-           <tr>
-               <td><button class="job-btn">디스트로이어</button></td>
-               <td><button class="job-btn">워로드</button></td>
-               <td><button class="job-btn">버서커</button></td>
-               <td><button class="job-btn">홀리나이트</button></td>
-               <td><button class="job-btn">슬레이어</button></td>
-               <td><button class="job-btn">데빌헌터</button></td>
-               <td><button class="job-btn">블래스터</button></td>
-               <td><button class="job-btn">호크아이</button></td>
-               <td><button class="job-btn">스카우터</button></td>
-               <td><button class="job-btn">건슬링어</button></td>
-           </tr>
-           <tr>
-               <td><button class="job-btn">배틀마스터</button></td>
-               <td><button class="job-btn">인파이터</button></td>
-               <td><button class="job-btn">기공사</button></td>
-               <td><button class="job-btn">창술사</button></td>
-               <td><button class="job-btn">스트라이커</button></td>
-               <td><button class="job-btn">브레이커</button></td>
-               <td><button class="job-btn">서머너</button></td>
-               <td><button class="job-btn">아르카나</button></td>
-               <td><button class="job-btn">소서리스</button></td>
-               <td><button class="job-btn">바드</button></td>
-           </tr>
-           <tr>
-               <td><button class="job-btn">블레이드</button></td>
-               <td><button class="job-btn">데모닉</button></td>
-               <td><button class="job-btn">리퍼</button></td>
-               <td><button class="job-btn">소울이터</button></td>
-               <td><button class="job-btn">도화가</button></td>
-               <td><button class="job-btn">기상술사</button></td>
-           </tr>
-       </table>
-       <div class="job-show">
-         <div class="job-show1">
-           <ul>
-               <li>dasdsa</li>
-               <li>dsadsa</li>
-               <li>dsadas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-           </ul>
+    <div class="limitFreeBoard-container">
+        <span id="limitFreeBoard-font">자유게시판</span>
+        <div class="limitFreeBoard">
+            {{#limitFreeBoards}}
+                <li class="limitFreeBoard-list">
+                    <span class="type">자유  </span>
+                    <a href="/community/freeBoard/{{id}}">{{title}}</a>
+                    <span class="mainDate">{{createdAt}}</span>
+                </li>
+            {{/limitFreeBoards}}
+            <a href="/community/freeBoard" id="noticesPlus">자유게시판 더보기</a>
+        </div>
+    </div>
 
 
-         </div>
-         <div class="job-show2">
-           <ul>
-               <li>dasdsa</li>
-               <li>dsadsa</li>
-               <li>dsadas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-               <li>dasdas</li>
-           </ul>
 
-
-         </div>
-       </div>
-   </div>
-   </div>
     <div class="MainNews-container">
     <span id="NewNews-font">공지사항</span>
     <div class="MainNews">
@@ -164,6 +111,13 @@
         form.action = "/characters/" + encodeURIComponent(characterName);
         form.submit();
     }
+</script>
+
+<script>
+    const paragraphs = document.querySelectorAll('span');
+    paragraphs.forEach(paragraph => {
+        paragraph.innerHTML = paragraph.innerHTML.replace(/T/g, ' ');
+    });
 </script>
 </body>
 </html>

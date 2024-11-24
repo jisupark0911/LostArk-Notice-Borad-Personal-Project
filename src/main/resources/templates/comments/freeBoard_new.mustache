@@ -41,17 +41,29 @@
                     <span>로그인 후 댓글을 작성할 수 있습니다.</span>
                 {{/userName}}
             </div>
+
             <div class="mb-3">
                 <label class="form-label">댓글 내용</label>
-                <textarea type="text" class="form-control" rows="3" id="new-comment-body"
-                    {{^userName}} onclick="alert('로그인 후 댓글을 작성할 수 있습니다!'); setTimeout(function(){ window.location.href='/main/login'; }, 100); return false;" {{/userName}}></textarea>
-
+                <textarea class="form-control" rows="3" id="new-comment-body"
+                    {{^userName}}
+                          onclick="alert('로그인 후 댓글을 작성할 수 있습니다!'); setTimeout(function(){ window.location.href='/main/login'; }, 100);"
+                    {{/userName}}
+                          style="word-wrap: break-word; overflow-wrap: break-word;" maxlength="255">
+                </textarea>
             </div>
+
             {{#freeBoard}}
                 <input type="hidden" id="new-comment-freeBoard-id" value="{{id}}">
             {{/freeBoard}}
 
-            <button type="button" class="write-button" id="comment-create-btn">작성</button>
+            {{#userName}}
+                <button type="button" class="write-button" id="comment-create-btn" >작성</button>
+            {{/userName}}
+
+            {{^userName}}
+                <button type="button" class="write-button" id="comment-create-btn"
+                        onclick="alert('로그인 후 댓글을 작성할 수 있습니다!'); setTimeout(function(){ window.location.href='/main/login'; }, 100);">작성</button>
+            {{/userName}}
         </form>
     </div>
 </div>
