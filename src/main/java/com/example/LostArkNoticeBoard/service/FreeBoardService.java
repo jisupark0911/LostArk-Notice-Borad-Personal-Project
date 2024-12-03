@@ -1,8 +1,12 @@
 package com.example.LostArkNoticeBoard.service;
 
+
 import com.example.LostArkNoticeBoard.entity.FreeBoard;
 import com.example.LostArkNoticeBoard.repository.FreeBoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -32,9 +36,15 @@ public class FreeBoardService {
         resultSet.addAll(byTitle);
         resultSet.addAll(byContent);
 
-
         return resultSet.stream().collect(Collectors.toList());
     }
+
+
+    public Page<FreeBoard> getFreeBoardList(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return freeBoardRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
+
 
     public FreeBoardService(FreeBoardRepository freeBoardRepository) {
         this.freeBoardRepository = freeBoardRepository;

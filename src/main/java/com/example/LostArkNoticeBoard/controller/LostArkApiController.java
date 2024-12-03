@@ -127,4 +127,26 @@ public class LostArkApiController {
         }
         return "character/character";
     }
+
+    @GetMapping("/gamecontents/challenge-abyss-dungeons")
+    public String getAbyss(Model model) {
+        try {
+            Abyss[] abyss = lostArkApiService.getAbyss();
+            model.addAttribute("abyss", abyss);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "gamecontents/challenge";
+    }
+
+    @GetMapping("/gamecontents/challenge-guardian-raids")
+    public String getGuardians(Model model) {
+        try {
+            Guardian[] guardians = lostArkApiService.getGuardians();
+            model.addAttribute("guardians", guardians);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "gamecontents/challenge";
+    }
 }

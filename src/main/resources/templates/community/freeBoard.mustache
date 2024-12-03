@@ -55,8 +55,41 @@
             <a href="/main/login" onclick="alert('로그인 후 글을 작성해주세요!'); setTimeout(function(){ window.location.href='/main/login'; }, 100);
              return false;" class="write-button">글작성</a>
         {{/userName}}
+
+        <div class="pagination">
+            <ul>
+                {{#hasPrevious}}
+                    <li class="prev">
+                        <a href="/community/freeBoard?page={{previousPage}}">이전</a>
+                    </li>
+                {{/hasPrevious}}
+                {{^hasPrevious}}
+                    <li class="disabled">
+                        <a href="#">이전</a>
+                    </li>
+                {{/hasPrevious}}
+
+                {{#pageLinks}}
+                    <li class="{{#isActive}}active{{/isActive}}">
+                        <a href="/community/freeBoard?page={{pageNumber}}">{{displayPageNumber}}</a>
+                    </li>
+                {{/pageLinks}}
+
+                {{#hasNext}}
+                    <li class="next">
+                        <a href="/community/freeBoard?page={{nextPage}}">다음</a>
+                    </li>
+                {{/hasNext}}
+                {{^hasNext}}
+                    <li class="disabled">
+                        <a href="#">다음</a>
+                    </li>
+                {{/hasNext}}
+            </ul>
+        </div>
+
     </div>
-</div>
+    </div>
 
 {{>layouts/footer}}
 

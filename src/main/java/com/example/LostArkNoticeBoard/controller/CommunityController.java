@@ -16,14 +16,13 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import com.example.LostArkNoticeBoard.dto.freeBoardCommentDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j // 로깅사용가능
 @Controller
@@ -57,12 +56,44 @@ public class CommunityController {
     }
 
     @GetMapping("/community/freeBoard")
-    public String freeBoardIndex(Model model, HttpSession session) {
-        List<FreeBoard> freeBoardList = freeBoardService.getFreeBoardList(); //최신순으로 추출
-        model.addAttribute("freeBoardList", freeBoardList);
+    public String freeBoardIndex(@RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 Model model) {
+
+        Page<FreeBoard> freeBoardPage = freeBoardService.getFreeBoardList(page, size);
+
+        // mustache는 사칙연산도 불가능해서 미리 계산해야함
+        int nextPage = page + 1;
+        int previousPage = page - 1;
+
+
+        model.addAttribute("freeBoardList", freeBoardPage.getContent());
+        model.addAttribute("totalPages", freeBoardPage.getTotalPages());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("previousPage", previousPage);
+        model.addAttribute("totalElements", freeBoardPage.getTotalElements());
+
+
+        List<Map<String, Object>> pageLinks = new ArrayList<>();
+        for (int i = 0; i < freeBoardPage.getTotalPages(); i++) {
+            Map<String, Object> pageLink = new HashMap<>();
+            pageLink.put("pageNumber", i);
+            pageLink.put("displayPageNumber", i + 1); //pageNumber는 0부터 시작이라 +1을 해줘야 실제 페이지로 보인다.
+            pageLink.put("isActive", i == page);
+            pageLinks.add(pageLink);
+        }
+        model.addAttribute("pageLinks", pageLinks);
+
+
+        model.addAttribute("hasPrevious", freeBoardPage.hasPrevious());
+        model.addAttribute("hasNext", freeBoardPage.hasNext());
 
         return "community/freeBoard";
     }
+
+
+
 
     @GetMapping("/community/freeBoard/new")
     public String freeBoardnew(){
@@ -208,12 +239,6 @@ public class CommunityController {
         return "redirect:/community/freeBoard/" + id;
     }
 
-
-
-
-
-
-
     @GetMapping("/community/jobBoard")
     public String jobBoardindex(Model model){
         ArrayList<JobBoard> jobBoardEntityList = jobBoardRepository.findAll();
@@ -282,6 +307,10 @@ public class CommunityController {
     @GetMapping("/community/freeBoard/search")
     public String freeBoardSearch(@RequestParam("keyword") String keyword, Model model) {
         List<FreeBoard> results = freeBoardService.searchByTitleOrContent(keyword);
+
+        // 검색결과 최신순으로 정렬
+        results.sort((fb1, fb2) -> fb2.getCreatedAt().compareTo(fb1.getCreatedAt()));
+
         model.addAttribute("freeBoardResults", results);
         model.addAttribute("freeBoardKeyword", keyword);
 

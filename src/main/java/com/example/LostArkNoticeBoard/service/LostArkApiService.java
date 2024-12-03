@@ -3,7 +3,6 @@ package com.example.LostArkNoticeBoard.service;
 import com.example.LostArkNoticeBoard.Model.*;
 import com.example.LostArkNoticeBoard.Model.Character;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -17,9 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -340,6 +337,52 @@ public class LostArkApiService {
         }
     }
 
+    @Async
+    public Abyss[] getAbyss() throws IOException {
+        String url = baseUrl + "/gamecontents/challenge-abyss-dungeons";
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseBody = reader.lines().collect(Collectors.joining());
+            reader.close();
+            log.info("받은 제이슨 abyss 데이터: " + responseBody);
+            return parseAbyss(responseBody);
+        } else {
+            log.error("받기 실패: " + responseCode);
+            return null;
+        }
+    }
+
+    @Async
+    public Guardian[] getGuardians() throws IOException {
+        String url = baseUrl + "/gamecontents/challenge-guardian-raids";
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseBody = reader.lines().collect(Collectors.joining());
+            reader.close();
+            log.info("받은 제이슨 guardian 데이터: " + responseBody);
+            return parseGuardian(responseBody);
+        } else {
+            log.error("받기 실패: " + responseCode);
+            return null;
+        }
+    }
+
 
 
     private Notice[] parseNotice(String responseBody) throws IOException {
@@ -402,6 +445,16 @@ public class LostArkApiService {
     private CharacterArkPassive parseCharacterArkPassive(String responseBody) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(responseBody, CharacterArkPassive.class);
+    }
+
+    private Abyss[] parseAbyss(String responseBody) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(responseBody, Abyss[].class);
+    }
+
+    private Guardian[] parseGuardian(String responseBody) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(responseBody, Guardian[].class);
     }
 
 }

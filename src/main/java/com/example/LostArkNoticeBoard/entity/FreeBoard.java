@@ -35,7 +35,7 @@ public class FreeBoard {
     private String userEmail;
 
     @CreatedDate  // 자동으로 현재 날짜 및 시간으로 설정, 이상하게 자동으로 컬럼삽입이 안되어서 직접 삽입을 시켜줬음
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false,name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
