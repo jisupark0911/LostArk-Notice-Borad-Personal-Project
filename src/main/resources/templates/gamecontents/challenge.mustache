@@ -1,0 +1,66 @@
+{{>layouts/header}}
+<!doctype html>
+<html>
+<head>
+    <title>gameContent</title>
+    <link rel="stylesheet" type="text/css" href="/css/gamecontent.css">
+</head>
+<body>
+<h2>도전 어비스</h2>
+<div class="abyss-container">
+    {{#abyss}}
+        <div class="abyss-main">
+            <h2>{{name}}</h2>
+            <img src="{{image}}" alt="Abyss Image" style="border-radius: 10px;">
+            <p>입장 레벨: {{minItemLevel}}</p>
+            <p>입장 지역: {{areaName}}</p>
+            <p>입장 가능 기간: {{startTime}} ~ {{endTime}}</p>
+            <p>{{description}}</p>
+
+            <h3>보상 아이템</h3>
+        <div class="reward-icon">
+            {{#rewardItem}}
+                    <p> <img src="{{icon}}" alt="Item Icon" style="border-radius: 10px;"></p>
+            {{/rewardItem}}
+        </div>
+        </div>
+    {{/abyss}}
+</div>
+
+<h2>도전 가디언 토벌</h2>
+<div class="guardian-container">
+    {{#guardians}}
+            {{#raids}}
+                <div class="guardian-main">
+                    <h2>{{name}}</h2>
+                    <p style="border-radius: 10px;"><img src="{{image}}" alt="Raid Image" /></p>
+                    <p>{{description}}</p>
+                    <p>입장 레벨: {{minItemLevel}}</p>
+                    <p>입장 가능 시간: {{startTime}} ~ {{endTime}}</p>
+                 </div>
+            {{/raids}}
+
+<!--
+        <h3>보상 아이템</h3>
+        {{#rewardItems}}
+            <div class="reward-icon">
+                {{#items}}
+                    <div class="item">
+                       name
+                        icon
+
+                    </div>
+                {{/items}}
+            </div>
+        {{/rewardItems}}
+        -->
+
+    {{/guardians}}
+</div>
+
+
+
+
+</body>
+</html>
+{{>layouts/footer}}

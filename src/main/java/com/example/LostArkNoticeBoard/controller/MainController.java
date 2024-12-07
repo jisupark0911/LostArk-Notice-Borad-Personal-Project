@@ -1,6 +1,8 @@
 package com.example.LostArkNoticeBoard.controller;
 
+import com.example.LostArkNoticeBoard.Model.Abyss;
 import com.example.LostArkNoticeBoard.Model.Event;
+import com.example.LostArkNoticeBoard.Model.Guardian;
 import com.example.LostArkNoticeBoard.Model.Notice;
 import com.example.LostArkNoticeBoard.entity.FreeBoard;
 import com.example.LostArkNoticeBoard.service.FreeBoardService;
@@ -46,6 +48,12 @@ public class MainController {
             // 상위 6개만 추출
             Notice[] limitedNotices = Arrays.copyOf(notices, Math.min(notices.length, 6));
             model.addAttribute("notices", limitedNotices);
+
+            Abyss[] abyss = lostArkApiService.getAbyss();
+            Guardian guardians = lostArkApiService.getGuardian();
+
+            model.addAttribute("abyss", abyss);
+            model.addAttribute("guardians", guardians);
 
             List<FreeBoard> freeBoardList = freeBoardService.getFreeBoardList();
             // 자유게시판 상위 6개만 추출

@@ -288,7 +288,7 @@ public class LostArkApiService {
     @Async
     public List<CharacterCollectible> getCharacterCollectibles(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
-        String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/collectibles";
+        String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/collectibles";
         log.info("Request URL: " + url);
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -303,19 +303,17 @@ public class LostArkApiService {
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
             log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterCollectible(responseBody);
+            return parseCharacterCollectible(responseBody); // 비동기 반환
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
         }
-
-
     }
 
     @Async
     public CharacterArkPassive getCharacterArkPassives(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
-        String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/arkpassive";
+        String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/arkpassive";
         log.info("Request URL: " + url);
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -330,14 +328,13 @@ public class LostArkApiService {
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
             log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterArkPassive(responseBody);
+            return parseCharacterArkPassive(responseBody); // 비동기 반환
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
         }
     }
 
-    @Async
     public Abyss[] getAbyss() throws IOException {
         String url = baseUrl + "/gamecontents/challenge-abyss-dungeons";
 
@@ -360,8 +357,7 @@ public class LostArkApiService {
         }
     }
 
-    @Async
-    public Guardian[] getGuardians() throws IOException {
+    public Guardian getGuardian() throws IOException { //단일구조 한 객체안에 배열 card와 구조같음
         String url = baseUrl + "/gamecontents/challenge-guardian-raids";
 
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -452,9 +448,11 @@ public class LostArkApiService {
         return objectMapper.readValue(responseBody, Abyss[].class);
     }
 
-    private Guardian[] parseGuardian(String responseBody) throws IOException {
+    private Guardian parseGuardian(String responseBody) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(responseBody, Guardian[].class);
+        return objectMapper.readValue(responseBody, Guardian.class);
     }
+
+
 
 }

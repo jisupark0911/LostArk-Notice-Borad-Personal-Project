@@ -1,0 +1,61 @@
+body {
+    background: rgb(43,45,49);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.abyss-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 70%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+.abyss-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 20px;
+    width: 35%;
+}
+
+.reward-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+.reward-icon p {
+    margin: 0;
+}
+h2  {
+    margin-top: 50px;
+}
+.guardian-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    width: 70%;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.guardian-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin: 20px;
+    width: 30%;
+
+}
+

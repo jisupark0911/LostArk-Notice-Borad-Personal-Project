@@ -128,25 +128,21 @@ public class LostArkApiController {
         return "character/character";
     }
 
-    @GetMapping("/gamecontents/challenge-abyss-dungeons")
-    public String getAbyss(Model model) {
+    @GetMapping("/gamecontents/challenge")
+    public String getGameContents(Model model) {
         try {
             Abyss[] abyss = lostArkApiService.getAbyss();
-            model.addAttribute("abyss", abyss);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "gamecontents/challenge";
-    }
+            Guardian guardians = lostArkApiService.getGuardian();
+            System.out.println(guardians);
 
-    @GetMapping("/gamecontents/challenge-guardian-raids")
-    public String getGuardians(Model model) {
-        try {
-            Guardian[] guardians = lostArkApiService.getGuardians();
+
+            model.addAttribute("abyss", abyss);
             model.addAttribute("guardians", guardians);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return "gamecontents/challenge";
     }
 }
