@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,10 @@ public class CharacterGem {
     private ArmoryGemEffect armoryGemEffect;
 
     public List<Gem> getSortedGems() {
+        if (gem == null) {
+            return Collections.emptyList(); // gem이 null이면 빈 리스트 반환
+        }
+
         return gem.stream()
                 .sorted(Comparator.comparing((Gem g) -> {
                                     // "멸화"가 먼저 오도록 우선순위 설정
@@ -34,6 +39,7 @@ public class CharacterGem {
                 )
                 .collect(Collectors.toList());
     }
+
 
     @Getter
     @Setter

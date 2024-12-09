@@ -17,6 +17,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 
@@ -29,7 +30,6 @@ public class LostArkApiService {
     @Value("${lostark.api.token}")
     private String apiToken;
 
-    @Async
     public Notice[] getNotices() throws IOException {
         String url = baseUrl + "/news/notices";
 
@@ -52,7 +52,6 @@ public class LostArkApiService {
         }
     }
 
-    @Async
     public Event[] getEvents() throws IOException {
         String url = baseUrl + "/news/events";
 
@@ -75,7 +74,6 @@ public class LostArkApiService {
         }
     }
 
-    @Async
     public Character[] getCharacters(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8"); //characterName 인코딩 안해주면 값 제대로 안들어 감
         //이 url주소가 api를 호출하는 url 인것이고 컨트롤러의 매핑주소는 그저 홈페이지의 주소를 나타내는것 뿐이다.
@@ -102,7 +100,7 @@ public class LostArkApiService {
     }
 
     @Async
-    public CharacterProfile getCharacterProfile(String characterName) throws IOException { //단일객체 구조
+    public CompletableFuture<CharacterProfile> getCharacterProfileAsync(String characterName) throws IOException { //단일객체 구조
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
         String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/profiles";
         log.info("Request URL: " + url);
@@ -118,8 +116,8 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterProfile(responseBody);
+            log.info("받은 profile 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterProfile(responseBody));
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
@@ -128,7 +126,7 @@ public class LostArkApiService {
 
 
     @Async
-    public CharacterEquipment[] getCharacterEquipment(String characterName) throws IOException {
+    public CompletableFuture<CharacterEquipment[]> getCharacterEquipmentAsync(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
         String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/equipment";
         log.info("Request URL: " + url);
@@ -144,8 +142,8 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterEquipment(responseBody);
+            log.info("받은 equipment 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterEquipment(responseBody));
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
@@ -154,58 +152,7 @@ public class LostArkApiService {
 
 
     @Async
-    public CharacterAvatar[] getCharacterAvatars(String characterName) throws IOException {
-        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
-        String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/avatars";
-        log.info("Request URL: " + url);
-
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String responseBody = reader.lines().collect(Collectors.joining());
-            reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterAvatar(responseBody);
-        } else {
-            log.error("받기 실패: " + responseCode);
-            return null;
-        }
-    }
-
-    @Async
-    public List<CharacterCombatSkill> getCharacterCombatSkills(String characterName) throws IOException { //베열 구조
-        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
-        String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/combat-skills";
-        log.info("Request URL: " + url);
-
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String responseBody = reader.lines().collect(Collectors.joining());
-            reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterCombatSkills(responseBody);
-        } else {
-            log.error("받기 실패: " + responseCode);
-            return Collections.emptyList();
-        }
-    }
-
-
-    @Async
-    public CharacterEngraving getCharacterEngravings(String characterName) throws IOException {
+    public CompletableFuture<CharacterEngraving> getCharacterEngravingsAsync(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
         String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/engravings";
         log.info("Request URL: " + url);
@@ -221,8 +168,8 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterEngraving(responseBody);
+            log.info("받은 engraving 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterEngraving(responseBody));
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
@@ -230,7 +177,7 @@ public class LostArkApiService {
     }
 
     @Async
-    public CharacterCard getCharacterCards(String characterName) throws IOException {
+    public CompletableFuture<CharacterCard> getCharacterCardsAsync(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
         String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/cards";
         log.info("Request URL: " + url);
@@ -246,8 +193,8 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterCard(responseBody);
+            log.info("받은 card 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterCard(responseBody));
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
@@ -255,7 +202,7 @@ public class LostArkApiService {
     }
 
     @Async
-    public CharacterGem getCharacterGems(String characterName) throws IOException {
+    public CompletableFuture<CharacterGem> getCharacterGemsAsync(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
         String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/gems";
         log.info("Request URL: " + url);
@@ -271,14 +218,14 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
+            log.info("받은 gem 데이터: " + responseBody);
             CharacterGem characterGem = parseCharacterGem(responseBody);
 
 
             List<CharacterGem.Gem> sortGems = characterGem.getSortedGems();
             characterGem.setGem(sortGems);
 
-            return characterGem;
+            return CompletableFuture.completedFuture(characterGem);
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
@@ -286,32 +233,7 @@ public class LostArkApiService {
     }
 
     @Async
-    public List<CharacterCollectible> getCharacterCollectibles(String characterName) throws IOException {
-        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
-        String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/collectibles";
-        log.info("Request URL: " + url);
-
-        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setRequestMethod("GET");
-        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
-        connection.setRequestProperty("Content-Type", "application/json");
-        connection.setRequestProperty("Accept", "application/json");
-
-        int responseCode = connection.getResponseCode();
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String responseBody = reader.lines().collect(Collectors.joining());
-            reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterCollectible(responseBody); // 비동기 반환
-        } else {
-            log.error("받기 실패: " + responseCode);
-            return null;
-        }
-    }
-
-    @Async
-    public CharacterArkPassive getCharacterArkPassives(String characterName) throws IOException {
+    public CompletableFuture<CharacterArkPassive> getCharacterArkPassivesAsync(String characterName) throws IOException {
         String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
         String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/arkpassive";
         log.info("Request URL: " + url);
@@ -327,13 +249,89 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 데이터: " + responseBody);
-            return parseCharacterArkPassive(responseBody); // 비동기 반환
+            log.info("받은 arkPassive 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterArkPassive(responseBody));
         } else {
             log.error("받기 실패: " + responseCode);
             return null;
         }
     }
+
+    @Async
+    public CompletableFuture<CharacterAvatar[]> getCharacterAvatarsAsync(String characterName) throws IOException {
+        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
+        String url = baseUrl + "/armories" + "/characters/" + encodedCharacterName + "/avatars";
+        log.info("Request URL: " + url);
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseBody = reader.lines().collect(Collectors.joining());
+            reader.close();
+            log.info("받은 avatar 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterAvatar(responseBody));
+        } else {
+            log.error("받기 실패: " + responseCode);
+            return null;
+        }
+    }
+
+    @Async
+    public CompletableFuture<List<CharacterCombatSkill>> getCharacterCombatSkillsAsync(String characterName) throws IOException { //베열 구조
+        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
+        String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/combat-skills";
+        log.info("Request URL: " + url);
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseBody = reader.lines().collect(Collectors.joining());
+            reader.close();
+            log.info("받은 skill 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterCombatSkills(responseBody));
+        } else {
+            log.error("받기 실패: " + responseCode);
+            return CompletableFuture.completedFuture(Collections.emptyList());
+        }
+    }
+
+    @Async
+    public CompletableFuture<List<CharacterCollectible>> getCharacterCollectiblesAsync(String characterName) throws IOException {
+        String encodedCharacterName = URLEncoder.encode(characterName, "UTF-8");
+        String url = baseUrl + "/armories/characters/" + encodedCharacterName + "/collectibles";
+        log.info("Request URL: " + url);
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + apiToken);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("Accept", "application/json");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseBody = reader.lines().collect(Collectors.joining());
+            reader.close();
+            log.info("받은 collect 데이터: " + responseBody);
+            return CompletableFuture.completedFuture(parseCharacterCollectible(responseBody));
+        } else {
+            log.error("받기 실패: " + responseCode);
+            return null;
+        }
+    }
+
 
     public Abyss[] getAbyss() throws IOException {
         String url = baseUrl + "/gamecontents/challenge-abyss-dungeons";
@@ -349,7 +347,7 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 abyss 데이터: " + responseBody);
+            log.info("받은 abyss 데이터: " + responseBody);
             return parseAbyss(responseBody);
         } else {
             log.error("받기 실패: " + responseCode);
@@ -371,7 +369,7 @@ public class LostArkApiService {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String responseBody = reader.lines().collect(Collectors.joining());
             reader.close();
-            log.info("받은 제이슨 guardian 데이터: " + responseBody);
+            log.info("받은 guardian 데이터: " + responseBody);
             return parseGuardian(responseBody);
         } else {
             log.error("받기 실패: " + responseCode);

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,42 +86,78 @@ public class LostArkApiController {
 
     @GetMapping("/characters/{characterName}")
     public String getCharacterDetails(@PathVariable String characterName, Model model) {
+        long startTime = System.currentTimeMillis();
+
         try {
-            CharacterProfile characterProfile = lostArkApiService.getCharacterProfile(characterName);
-            model.addAttribute("characterProfile", characterProfile);
+            CompletableFuture<CharacterProfile> characterProfileFuture = lostArkApiService.getCharacterProfileAsync(characterName);
+            CompletableFuture<CharacterEquipment[]> characterEquipmentsFuture = lostArkApiService.getCharacterEquipmentAsync(characterName);
+            CompletableFuture<CharacterEngraving> characterEngravingsFuture = lostArkApiService.getCharacterEngravingsAsync(characterName);
+            CompletableFuture<CharacterCard> characterCardsFuture = lostArkApiService.getCharacterCardsAsync(characterName);
+            CompletableFuture<CharacterGem> characterGemsFuture = lostArkApiService.getCharacterGemsAsync(characterName);
+            CompletableFuture<CharacterArkPassive> characterArkPassivesFuture = lostArkApiService.getCharacterArkPassivesAsync(characterName);
+            CompletableFuture<CharacterAvatar[]> characterAvatarsFuture = lostArkApiService.getCharacterAvatarsAsync(characterName);
+            CompletableFuture<List<CharacterCombatSkill>> characterCombatSkillsFuture = lostArkApiService.getCharacterCombatSkillsAsync(characterName);
+            CompletableFuture<List<CharacterCollectible>> characterCollectiblesFuture = lostArkApiService.getCharacterCollectiblesAsync(characterName);
 
-            CharacterEquipment[] characterEquipments = lostArkApiService.getCharacterEquipment(characterName);
-            List<CharacterEquipment> leftEquipments = Arrays.asList(characterEquipments).subList(0, 6);
-            List<CharacterEquipment> rightEquipments = Arrays.asList(characterEquipments).subList(6, 13);
-            model.addAttribute("leftEquipments", leftEquipments);
-            model.addAttribute("rightEquipments", rightEquipments);
+            characterProfileFuture.thenAcceptAsync(characterProfile -> {
+                model.addAttribute("characterProfile", characterProfile);
+            });
 
-            CharacterAvatar[] characterAvatars = lostArkApiService.getCharacterAvatars(characterName);
-            List<CharacterAvatar> leftAvatars = Arrays.asList(characterAvatars).subList(0, 6);
-            List<CharacterAvatar> rightAvatars = Arrays.asList(characterAvatars).subList(6, characterAvatars.length);
-            model.addAttribute("leftAvatars", leftAvatars);
-            model.addAttribute("rightAvatars", rightAvatars);
+            characterEquipmentsFuture.thenAcceptAsync(characterEquipments -> {
+                List<CharacterEquipment> leftEquipments = Arrays.asList(characterEquipments).subList(0, 6);
+                List<CharacterEquipment> rightEquipments = Arrays.asList(characterEquipments).subList(6, Math.min(13, characterEquipments.length)); // 13보다 작을때 오류 방지
+                model.addAttribute("leftEquipments", leftEquipments);
+                model.addAttribute("rightEquipments", rightEquipments);
+            });
 
-            List<CharacterCombatSkill> characterCombatSkills = lostArkApiService.getCharacterCombatSkills(characterName);
-            model.addAttribute("characterCombatSkills", characterCombatSkills);
+            characterEngravingsFuture.thenAcceptAsync(characterEngravings -> {
+                model.addAttribute("characterEngravings", characterEngravings);
+            });
 
-            CharacterEngraving characterEngravings = lostArkApiService.getCharacterEngravings(characterName);
-            model.addAttribute("characterEngravings", characterEngravings);
+            characterCardsFuture.thenAcceptAsync(characterCards -> {
+                model.addAttribute("characterCards", characterCards);
+            });
 
-            CharacterCard characterCards = lostArkApiService.getCharacterCards(characterName);
-            model.addAttribute("characterCards", characterCards);
+            characterGemsFuture.thenAcceptAsync(characterGems -> {
+                model.addAttribute("characterGems", characterGems);
+            });
 
-            CharacterGem characterGems = lostArkApiService.getCharacterGems(characterName);
-            model.addAttribute("characterGems", characterGems);
+            characterArkPassivesFuture.thenAcceptAsync(characterArkPassives -> {
+                model.addAttribute("characterArkPassives", characterArkPassives);
+            });
 
-            List<CharacterCollectible> characterCollectibles = lostArkApiService.getCharacterCollectibles(characterName);
-            model.addAttribute("characterCollectibles", characterCollectibles);
+            characterAvatarsFuture.thenAcceptAsync(characterAvatars -> {
+                int midIndex = characterAvatars.length / 2;
+                List<CharacterAvatar> leftAvatars = Arrays.asList(characterAvatars).subList(0, midIndex);
+                List<CharacterAvatar> rightAvatars = Arrays.asList(characterAvatars).subList(midIndex, characterAvatars.length);
+                model.addAttribute("leftAvatars", leftAvatars);
+                model.addAttribute("rightAvatars", rightAvatars);
+            });
 
-            CharacterArkPassive characterArkPassives = lostArkApiService.getCharacterArkPassives(characterName);
-            model.addAttribute("characterArkPassives", characterArkPassives);
+            characterCombatSkillsFuture.thenAcceptAsync(characterCombatSkills -> {
+                model.addAttribute("characterCombatSkills", characterCombatSkills);
+            });
+
+            characterCollectiblesFuture.thenAcceptAsync(characterCollectibles -> {
+                model.addAttribute("characterCollectibles", characterCollectibles);
+            });
 
             model.addAttribute("characterName", characterName);
 
+            CompletableFuture.allOf(
+                    characterProfileFuture,
+                    characterEquipmentsFuture,
+                    characterEngravingsFuture,
+                    characterCardsFuture,
+                    characterGemsFuture,
+                    characterArkPassivesFuture,
+                    characterAvatarsFuture,
+                    characterCombatSkillsFuture,
+                    characterCollectiblesFuture
+            ).join();
+
+            long endTime = System.currentTimeMillis();
+            log.info("캐릭터 이름: {}. 캐릭터 정보를 가져오는 전체 시간: {} ms", characterName, (endTime - startTime));
 
         } catch (IOException e) {
             log.error("캐릭터 정보를 가져오는 데 실패했습니다.", e);
@@ -127,6 +165,9 @@ public class LostArkApiController {
         }
         return "character/character";
     }
+
+
+
 
     @GetMapping("/gamecontents/challenge")
     public String getGameContents(Model model) {

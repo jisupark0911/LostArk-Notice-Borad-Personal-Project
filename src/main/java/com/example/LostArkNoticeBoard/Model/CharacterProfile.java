@@ -67,6 +67,9 @@ public class CharacterProfile {
     public String getTitle() {
         return title != null ? title : "-"; //칭호 설정을 안해서 null일때가 있음
     }
+    public String getGuildName() {
+        return guildName != null ? guildName : "-";
+    }
 
 
 
