@@ -174,16 +174,20 @@ public class LostArkApiController {
         try {
             Abyss[] abyss = lostArkApiService.getAbyss();
             Guardian guardians = lostArkApiService.getGuardian();
-            System.out.println(guardians);
 
-
-            model.addAttribute("abyss", abyss);
-            model.addAttribute("guardians", guardians);
+            if (abyss == null || guardians == null) {
+                model.addAttribute("challengeError", "API가 삭제 되었습니다.");
+            } else {
+                model.addAttribute("abyss", abyss);
+                model.addAttribute("guardians", guardians);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
+            model.addAttribute("challengeError", "API가 삭제 되었습니다.");
         }
 
         return "gamecontents/challenge";
     }
+
 }
