@@ -43,23 +43,11 @@ jobs:
           aws-access-key-id: ${{ secrets.CICD_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.CICD_SECRET_KEY }}
 
+      - name: DB_HOST 값 확인
+        run: echo "DB_HOST=${{ secrets.DB_HOST }}"
+
       - name: S3에 업로드
         run: aws deploy push --application-name cicd-CD --ignore-hidden-files --s3-location s3://s3bucketjisupark/cicd/$GITHUB_SHA.zip --source . --region ap-northeast-2
 
       - name: EC2에 배포
         run: aws deploy create-deployment --application-name ${{ env.AWS_CODE_DEPLOY_APPLICATION }} --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ env.AWS_CODE_DEPLOY_GROUP }} --s3-location bucket=$AWS_S3_BUCKET,key=cicd/$GITHUB_SHA.zip,bundleType=zip
-
-      - name: Spring Boot 애플리케이션 실행
-        run: |
-          export DB_HOST=${{ secrets.DB_HOST }}
-          export DB_USERNAME=${{ secrets.DB_USERNAME }}
-          export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-          
-          
-          java -Dspring.datasource.url=jdbc:mysql://${DB_HOST}:3306/lostarknoticeboard \
-               -Dspring.datasource.username=${DB_USERNAME} \
-               -Dspring.datasource.password=${DB_PASSWORD} \
-               -Dspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver \
-               -Dspring.jpa.hibernate.ddl-auto=update \
-               -Dspring.jpa.show-sql=true \
-               -jar build/libs/LostArkNoticeBoard-0.0.1-SNAPSHOT.jar
