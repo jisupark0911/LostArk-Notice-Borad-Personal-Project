@@ -332,6 +332,7 @@ public class LostArkApiService {
         }
     }
 
+    /*
 
     public Abyss[] getAbyss() throws IOException {
         String url = baseUrl + "/gamecontents/challenge-abyss-dungeons";
@@ -376,6 +377,8 @@ public class LostArkApiService {
             return null;
         }
     }
+
+     */
 
 
 
@@ -441,6 +444,7 @@ public class LostArkApiService {
         return objectMapper.readValue(responseBody, CharacterArkPassive.class);
     }
 
+    /*
     private Abyss[] parseAbyss(String responseBody) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(responseBody, Abyss[].class);
@@ -450,7 +454,7 @@ public class LostArkApiService {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(responseBody, Guardian.class);
     }
-
+*/
 
 
 }

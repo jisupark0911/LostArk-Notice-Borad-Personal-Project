@@ -49,6 +49,7 @@ public class MainController {
             Notice[] limitedNotices = Arrays.copyOf(notices, Math.min(notices.length, 6));
             model.addAttribute("notices", limitedNotices);
 
+/*
             Abyss[] abyss = lostArkApiService.getAbyss();
             Guardian guardians = lostArkApiService.getGuardian();
 
@@ -58,6 +59,7 @@ public class MainController {
                 model.addAttribute("abyss", abyss);
                 model.addAttribute("guardians", guardians);
             }
+            */
             List<FreeBoard> freeBoardList = freeBoardService.getFreeBoardList();
             // 자유게시판 상위 6개만 추출
             List<FreeBoard> limitFreeBoards = freeBoardList.stream()
@@ -66,7 +68,10 @@ public class MainController {
             model.addAttribute("limitFreeBoards", limitFreeBoards);
         } catch (IOException e) {
             e.printStackTrace();
+            /*
             model.addAttribute("challengeError", "API가 삭제 되었습니다.");
+            */
+
         }
         return "main"; // main.mustache를 렌더링
     }

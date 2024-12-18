@@ -168,7 +168,7 @@ public class LostArkApiController {
 
 
 
-
+/*
     @GetMapping("/gamecontents/challenge")
     public String getGameContents(Model model) {
         try {
@@ -189,5 +189,7 @@ public class LostArkApiController {
 
         return "gamecontents/challenge";
     }
+    */
+
 
 }
