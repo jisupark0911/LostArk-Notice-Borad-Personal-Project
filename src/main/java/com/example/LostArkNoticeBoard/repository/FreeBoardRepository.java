@@ -21,6 +21,5 @@ public interface FreeBoardRepository extends CrudRepository<FreeBoard, Long> {
     List<FreeBoard> findAllByOrderByCreatedAtDesc();
     Page<FreeBoard> findAllByOrderByCreatedAtDesc(Pageable pageable);
     Page<FreeBoard> findAll(Pageable pageable);
-
-
+    Page<FreeBoard> findByTitleContainingOrContentContaining(String keyword, String keyword1, Pageable pageable);
 }

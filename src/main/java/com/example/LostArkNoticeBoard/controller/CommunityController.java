@@ -1,13 +1,10 @@
 package com.example.LostArkNoticeBoard.controller;
 
-import com.example.LostArkNoticeBoard.dto.jobBoardForm;
 import com.example.LostArkNoticeBoard.entity.FreeBoard;
 import com.example.LostArkNoticeBoard.dto.freeBoardForm;
 import com.example.LostArkNoticeBoard.entity.FreeBoardLike;
-import com.example.LostArkNoticeBoard.entity.JobBoard;
 import com.example.LostArkNoticeBoard.repository.FreeBoardLikeRepository;
 import com.example.LostArkNoticeBoard.repository.FreeBoardRepository;
-import com.example.LostArkNoticeBoard.repository.JobBoardRepository;
 import com.example.LostArkNoticeBoard.service.FreeBoardCommentService;
 import com.example.LostArkNoticeBoard.service.FreeBoardService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,8 +28,6 @@ import java.util.*;
 public class CommunityController {
     @Autowired
     private FreeBoardRepository freeBoardRepository;
-    @Autowired
-    private JobBoardRepository jobBoardRepository;
     @Autowired
     private HttpSession session;
     @Autowired
@@ -237,71 +232,6 @@ public class CommunityController {
         freeBoardRepository.save(freeBoardEntity);
 
         return "redirect:/community/freeBoard/" + id;
-    }
-
-    @GetMapping("/community/jobBoard")
-    public String jobBoardindex(Model model){
-        ArrayList<JobBoard> jobBoardEntityList = jobBoardRepository.findAll();
-        model.addAttribute("jobBoardList", jobBoardEntityList);
-
-        return "community/jobBoard";
-    }
-
-    @GetMapping("/community/jobBoard/new")
-    public String jobBoardnew(){
-
-        return "community/jobBoard_new";
-        }
-
-    @PostMapping("/community/jobBoard/create")
-    public String jobBoardcreate(jobBoardForm form){
-        JobBoard jobBoard = form.jobEntity();
-        log.info(jobBoard.toString());
-        JobBoard jobBoardsave = jobBoardRepository.save(jobBoard);
-        log.info(jobBoardsave.toString());
-
-        return "redirect:/community/jobBoard/"+jobBoardsave.getId();
-
-
-    }
-
-    @GetMapping("/community/jobBoard/{id}")
-    public String jobBoardshow(@PathVariable Long id, Model model){
-        log.info("id = " + id);
-        JobBoard jobBoardEntity = jobBoardRepository.findById(id).orElse(null);
-        model.addAttribute("jobBoard", jobBoardEntity);
-
-        return "community/jobBoard_show";
-    }
-
-    @GetMapping("/community/jobBoard/{id}/edit")
-    public String jobBoardedit(@PathVariable Long id, Model model) {
-        JobBoard jobBoardEntity = jobBoardRepository.findById(id).orElse(null);
-        model.addAttribute("jobBoard",jobBoardEntity);
-
-        return "community/jobBoard_edit";
-    }
-
-    @PostMapping("/community/jobBoard/update")
-    public String jobBoardupdate(jobBoardForm form){
-        log.info(form.toString());
-        JobBoard jobBoardEntity = form.jobEntity();
-        JobBoard jobBoardtarget = jobBoardRepository.findById(jobBoardEntity.getId()).orElse(null);
-        if(jobBoardtarget != null){
-            jobBoardtarget = jobBoardRepository.save(jobBoardEntity);
-        }
-        return "redirect:/community/jobBoard/"+jobBoardEntity.getId();
-    }
-
-
-    @GetMapping("/community/jobBoard/{id}/delete")
-    public String jobBoarddelete(@PathVariable Long id, RedirectAttributes rttr) {
-        JobBoard jobBoardtarget = jobBoardRepository.findById(id).orElse(null);
-        if(jobBoardtarget != null){
-            jobBoardRepository.delete(jobBoardtarget);
-            rttr.addFlashAttribute("msg","삭제됐습니다.");
-        }
-        return "redirect:/community/jobBoard";
     }
 
     @GetMapping("/community/freeBoard/search")

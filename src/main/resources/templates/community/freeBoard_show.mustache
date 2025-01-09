@@ -1,70 +1,119 @@
-<!-- 자유게시판 상세 -->
 {{>layouts/header}}
 <!doctype html>
-<html>
+<html lang="ko">
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/freeBoardShow.css">
+    <meta charset="UTF-8">
     <title>자유게시판 상세</title>
+    <link rel="stylesheet" type="text/css" href="/css/freeBoardShow.css">
 </head>
 <body>
 
-<div class="show-container">
+<div class="show-container" id="showContainer">
     <div class="show-head">
-        {{#freeBoard}}
-            <span class="show-id">{{username}}</span>
-            <span style="margin-left: 60px;">작성시간: {{createdAt}}</span>
-            <span class="show-username"> 좋아요: {{likeCount}} 조회수: {{viewCount}}</span>
-        {{/freeBoard}}
+        <span id="showUsername"></span>
+        <span id="showCreatedAt" style="margin-left: 60px;"></span>
+        <span id="showLikeCount" class="show-username"></span>
+        <span id="showViewCount" class="show-username"></span>
     </div>
 
     <div class="show-name">
-        {{#freeBoard}}
-            <span class="show-title" style="width: 830px; word-wrap: break-word; overflow-wrap: break-word;">{{title}}</span>
-        {{/freeBoard}}
+        <span id="showTitle" class="show-title" style="width: 830px; word-wrap: break-word; overflow-wrap: break-word;"></span>
     </div>
 
     <div class="show-main">
-        {{#freeBoard}}
-            <span class="show-content" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word;">{{content}}</span>
-        {{/freeBoard}}
+        <span id="showContent" class="show-content" style="white-space: pre-line; word-wrap: break-word; overflow-wrap: break-word;"></span>
     </div>
 
     <div class="like-container">
-        <form action="/community/freeBoard/{{freeBoard.id}}/toggleLike" method="post">
-            <button type="submit" class="like-button">
-                {{#userName}}
-                    {{#isLiked}}좋아요 취소{{/isLiked}}
-                    {{^isLiked}}좋아요{{/isLiked}}
-                {{/userName}}
-                {{^userName}}
-                    <a href="/main/login"
-                       onclick="alert('로그인 후 좋아요를 눌러주세요!'); setTimeout(function(){ window.location.href='/main/login'; }, 100); return false;"
-                       style="text-decoration: none; color: inherit; background: none; border: none; outline: none; cursor: default;">
-                        좋아요
-                    </a>
-                {{/userName}}
-            </button>
-        </form>
+        <button id="likeButton" class="like-button">
+
+        </button>
     </div>
 
     <div class="edl-controller">
         <a href="/community/freeBoard" class="write-button">목록</a>
-        {{#isAuthor}}
-            <div class="edit-delete-buttons">
-                <a href="/community/freeBoard/{{freeBoard.id}}/edit" class="write-button">수정</a>
-                <a href="/community/freeBoard/{{freeBoard.id}}/delete" class="write-button">삭제</a>
-            </div>
-        {{/isAuthor}}
+        <div id="editDeleteButtons" class="edit-delete-buttons" style="display: none;">
+            <a href="#" id="editButton" class="write-button">수정</a>
+            <a href="#" id="deleteButton" class="write-button">삭제</a>
+        </div>
     </div>
 
     {{>comments/freeBoard_comments}}
 </div>
+
+<script>
+    const pathSegments = window.location.pathname.split('/');
+    const postId = pathSegments[pathSegments.length - 1];
+
+    function getFreeBoardDetails(postId) {
+        fetch(`/api/community/freeBoard/${postId}`)
+            .then(response => response.json())
+            .then(data => {
+
+                if (!data) {
+                    console.error("게시글 정보가 없습니다.");
+                    return;
+                }
+
+                document.getElementById('showUsername').textContent = `작성자: ${data.username}`;
+                document.getElementById('showCreatedAt').textContent = `작성시간: ${data.createdAt.replace('T', ' ')}`;
+                document.getElementById('showLikeCount').textContent = `좋아요: ${data.likeCount}`;
+                document.getElementById('showViewCount').textContent = `조회수: ${data.viewCount}`;
+                document.getElementById('showTitle').textContent = data.title;
+                document.getElementById('showContent').textContent = data.content;
+
+                const likeButton = document.getElementById('likeButton');
+                if (data.isLiked) {
+                    likeButton.textContent = '좋아요 취소';
+                } else {
+                    likeButton.textContent = '좋아요';
+                }
+
+                const isAuthor = data.userEmail === data.loginEmail;
+                const editDeleteButtons = document.getElementById('editDeleteButtons');
+
+                if (isAuthor) {
+                    editDeleteButtons.style.display = 'block';
+                    document.getElementById('editButton').href = `/community/freeBoard/${data.id}/edit`;
+                    document.getElementById('deleteButton').href = `/community/freeBoard/${data.id}/delete`;
+                }
+            })
+            .catch(error => {
+                console.error('게시글을 가져오는 중 오류가 발생했습니다:', error);
+            });
+    }
+
+    function toggleLike(postId) {
+    fetch(`/api/community/freeBoard/${postId}/toggleLike`, {
+        method: 'POST'
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('좋아요 상태가 변경되었습니다.');
+            getFreeBoardDetails(postId);
+        } else if (response.status === 401) {
+            alert('로그인을 한 사용자만 좋아요를 누를 수 있습니다.');
+            window.location.href = '/main/login';
+        } else {
+            alert('서버에서 오류가 발생했습니다. 나중에 다시 시도해주세요.');
+        }
+    })
+    .catch(error => {
+        console.error('좋아요 상태 변경 중 오류가 발생했습니다:', error);
+        alert('서버와의 통신 중 문제가 발생했습니다.');
+    });
+}
+
+    document.getElementById('likeButton').addEventListener('click', () => {
+        toggleLike(postId);
+    });
+
+    window.onload = () => {
+        getFreeBoardDetails(postId);
+    };
+</script>
+
+{{>layouts/footer}}
+
 </body>
 </html>
-<script>
-    const paragraphs = document.querySelectorAll('span');
-    paragraphs.forEach(paragraph => {
-        paragraph.innerHTML = paragraph.innerHTML.replace(/T/g, ' ');
-    });
-</script>
-{{>layouts/footer}}

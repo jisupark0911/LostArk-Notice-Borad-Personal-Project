@@ -44,4 +44,10 @@ public class FreeBoard {
     @Column(nullable = false)
     private Long likeCount = 0L;
 
+    public void freeBoardPatch(FreeBoard freeBoard) {
+        if(freeBoard.title != null)
+            this.title = freeBoard.title;
+        if(freeBoard.content != null)
+            this.content = freeBoard.content;
+    }
 }

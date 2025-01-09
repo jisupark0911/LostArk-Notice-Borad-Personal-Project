@@ -1,6 +1,5 @@
 {{>layouts/header}}
-<!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>자유게시판</title>
@@ -11,88 +10,143 @@
 <div class="freeBoard-container">
     <h1>자유게시판</h1>
 
+    <form id="search-form" method="get" class="freeBoard-form">
+    <input type="text" id="keyword" name="keyword" class="form-control" placeholder="검색어를 입력해주세요"
+            value="{{#freeBoardKeyword}}{{freeBoardKeyword}}{{/freeBoardKeyword}}{{^freeBoardKeyword}}""{{/freeBoardKeyword}}">
+        <button type="submit" class="freeBoard-btn">검색</button>
+    </form>
 
-        <form action="/community/freeBoard/search" method="get" class="freeBoard-form">
-            <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력해주세요" required>
-            <button type="submit" class="freeBoard-btn">검색</button>
-        </form>
 
     <div class="freeBoard-main">
-    <h2>게시판 목록</h2>
-    <table class="freeBoard-table">
-        <thead>
-        <tr>
-            <th scope="col">번호</th>
-            <th scope="col">제목</th>
-            <th scope="col">작성자</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tbody>
-        {{#freeBoardResults}}
+        <h2>게시판 목록</h2>
+        <table class="freeBoard-table">
+            <thead>
             <tr>
-                <td>{{id}}</td>
-                <td class="title-td"><a href="/community/freeBoard/{{id}}" class="link-primary">{{title}}</a></td>
-                <td class="title-td">{{username}}</td>
+                <th scope="col">번호</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
             </tr>
-        {{/freeBoardResults}}
-
-        {{#freeBoardList}}
-            <tr>
-              <td>{{id}}</td>
-               <td class="title-td"><a href="/community/freeBoard/{{id}}" class="link-primary">{{title}}</a></td>
-               <td class="title-td">{{username}}</td>
-            </tr>
-        {{/freeBoardList}}
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="freeBoard-list">
+            <!-- 게시글 목록 -->
+            </tbody>
+        </table>
 
         {{#userName}}
-        <a href="/community/freeBoard/new" class="write-button">글작성</a>
+            <a href="/community/freeBoard/new" class="write-button">글작성</a>
         {{/userName}}
 
         {{^userName}}
-            <a href="/main/login" onclick="alert('로그인 후 글을 작성해주세요!'); setTimeout(function(){ window.location.href='/main/login'; }, 100);
-             return false;" class="write-button">글작성</a>
+            <a href="/main/login" onclick="alert('로그인 후 글을 작성해주세요!'); setTimeout(function(){ window.location.href='/main/login'; }, 100); return false;"
+               class="write-button">글작성</a>
         {{/userName}}
 
-        <div class="pagination">
-            <ul>
-                {{#hasPrevious}}
-                    <li class="prev">
-                        <a href="/community/freeBoard?page={{previousPage}}">이전</a>
-                    </li>
-                {{/hasPrevious}}
-                {{^hasPrevious}}
-                    <li class="disabled">
-                        <a href="#">이전</a>
-                    </li>
-                {{/hasPrevious}}
-
-                {{#pageLinks}}
-                    <li class="{{#isActive}}active{{/isActive}}">
-                        <a href="/community/freeBoard?page={{pageNumber}}">{{displayPageNumber}}</a>
-                    </li>
-                {{/pageLinks}}
-
-                {{#hasNext}}
-                    <li class="next">
-                        <a href="/community/freeBoard?page={{nextPage}}">다음</a>
-                    </li>
-                {{/hasNext}}
-                {{^hasNext}}
-                    <li class="disabled">
-                        <a href="#">다음</a>
-                    </li>
-                {{/hasNext}}
-            </ul>
+        <div class="pagination" id="pagination">
+            <!-- 페이지네이션 -->
         </div>
-
     </div>
-    </div>
+</div>
 
 {{>layouts/footer}}
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-oBqDVmMz4fnFO9xII3SwmN9ALqAR0cP9+zQ4pE3x5m5s10sHf5xnkJdC5yHqZ9xQ" crossorigin="anonymous"></script>
+<script>
+    function getFreeBoardList(page = 0, size = 10, keyword = '') {
+
+        const url = keyword
+            ? `/api/community/freeBoard?page=${page}&size=${size}&keyword=${encodeURIComponent(keyword)}`
+            : `/api/community/freeBoard?page=${page}&size=${size}`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                displayFreeBoardList(data);
+            })
+            .catch(error => {
+                console.error('데이터를 가져오는 중 오류가 발생했습니다:', error);
+            });
+    }
+
+    function displayFreeBoardList(data) {
+        const container = document.getElementById('freeBoard-list');
+        container.innerHTML = ''; 
+
+        data.freeBoardList.forEach(freeBoard => {
+            const listItem = document.createElement('tr');
+            listItem.classList.add('board-item');
+            listItem.innerHTML = `
+                <td>${freeBoard.id}</td>
+                <td class="title-td"><a href="/community/freeBoard/${freeBoard.id}" class="link-primary">${freeBoard.title}</a></td>
+                <td class="title-td">${freeBoard.username}</td>
+            `;
+            container.appendChild(listItem);
+        });
+
+        displayPagination(data.pageLinks, data.currentPage, data.hasPrevious, data.hasNext, data.nextPage, data.previousPage);
+    }
+
+
+    function displayPagination(pageLinks, currentPage, hasPrevious, hasNext, nextPage, previousPage) {
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = '';
+
+        const paginationList = document.createElement('ul');
+        paginationContainer.appendChild(paginationList);
+
+        if (hasPrevious) {
+            const prevButton = document.createElement('li');
+            prevButton.classList.add('prev');
+            const prevLink = document.createElement('a');
+            prevLink.href = `/community/freeBoard?page=${previousPage}`;
+            prevLink.textContent = '이전';
+            prevButton.appendChild(prevLink);
+            paginationList.appendChild(prevButton);
+        } else {
+            const prevButton = document.createElement('li');
+            prevButton.classList.add('disabled');
+            const prevLink = document.createElement('a');
+            prevLink.textContent = '이전';
+            prevButton.appendChild(prevLink);
+            paginationList.appendChild(prevButton);
+        }
+
+        pageLinks.forEach(pageLink => {
+            const pageButton = document.createElement('li');
+            pageButton.classList.toggle('active', pageLink.isActive);
+            const pageLinkElement = document.createElement('a');
+            pageLinkElement.href = `/community/freeBoard?page=${pageLink.pageNumber}`;
+            pageLinkElement.textContent = pageLink.displayPageNumber;
+            pageButton.appendChild(pageLinkElement);
+            paginationList.appendChild(pageButton);
+        });
+
+        if (hasNext) {
+            const nextButton = document.createElement('li');
+            nextButton.classList.add('next');
+            const nextLink = document.createElement('a');
+            nextLink.href = `/community/freeBoard?page=${nextPage}`;
+            nextLink.textContent = '다음';
+            nextButton.appendChild(nextLink);
+            paginationList.appendChild(nextButton);
+        } else {
+            const nextButton = document.createElement('li');
+            nextButton.classList.add('disabled');
+            const nextLink = document.createElement('a');
+            nextLink.textContent = '다음';
+            nextButton.appendChild(nextLink);
+            paginationList.appendChild(nextButton);
+        }
+    }
+
+    window.onload = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const page = parseInt(urlParams.get('page')) || 0;
+        const keyword = urlParams.get('keyword') || '';
+
+        document.getElementById('keyword').value = keyword;
+
+        getFreeBoardList(page, 10, keyword);
+    };
+</script>
+
 </body>
 </html>
